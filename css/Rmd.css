@@ -1,0 +1,217 @@
+/*
+   Customization for RMarkdown
+   Copyright: Lemuel Kumarga
+*/
+
+
+/*
+=========================================
+    Headers
+=========================================
+*/
+
+h1,h2,h3,h4,h5,h6
+.h1,.h2,.h3,.h4,.h5,.h6 {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+h1.title {
+  font-size: 3.5em;
+}
+
+/*
+=========================================
+    Table of Contents
+=========================================
+*/
+.tocify {
+    background-color: transparent;
+    border: 0px;
+    border-radius: 0px;
+}
+/* Floating TOC Row: Inactive */
+.tocify ul,
+.tocify li  {
+    background-color: transparent;
+}
+.tocify li {
+    color: var(--sec-50);
+    border-left: 5px solid var(--sec-50);
+}
+/* Floating TOC Row: Hover */
+.list-group-item:focus,
+.list-group-item:hover {
+    color: var(--sec-75);
+    font-weight: bold;
+    background-color: transparent;
+    border-left: 5px solid var(--sec-75);
+}
+/* Floating TOC Row: Active */
+.list-group-item.active,
+.list-group-item.active:hover,
+.list-group-item.active:focus {
+    color: var(--sec);
+    opacity: 1.0;
+    background-color: transparent;
+    border-left: 5px solid var(--sec);
+}
+/* Non-Floating TOC */ 
+#TOC {
+	color: var(--font-color);
+}
+#TOC a {
+	opacity: 1.0;
+}
+#TOC a:hover {
+	opacity: 0.75;
+}
+/*
+=========================================
+    Code Blocks
+=========================================
+*/
+/* Code Blocks: Code */
+.r {
+  color: var(--font-color);
+  background-color: transparent;
+  border-color: transparent;
+  border-color: transparent transparent transparent var(--font-color-50);
+  border-width: 0px 0px 0px 5px;
+  font-size: 90%;
+}
+/* Code Blocks: Syntax */
+/* comment */
+.hljs-comment { color: var(--font-color); opacity: 0.5; }
+/* literal - boolean or NA*/
+.hljs-literal { color: var(--color-1); }
+/* string */
+.hljs-string { color: var(--color-2); }
+/* functions */
+.hljs-keyword { color: var(--color-3); }
+/* number */
+.hljs-number{ color: var(--color-4); }
+/* Code Blocks: Results */
+pre:not([class]) {
+    color: var(--font-color);
+    background-color: transparent;
+    border-color: transparent transparent transparent var(--font-color-75);
+    border-width: 0px 0px 0px 5px;
+}
+
+/*
+=========================================
+    Code Buttons
+=========================================
+*/
+/* Code Buttons:; Inactive */
+.btn-default {
+  color: var(--font-color-75);
+  background-color: transparent;
+  border-color: transparent;
+}
+/* Code Buttons:; Active */
+.btn-default:focus,
+.btn-default.focus,
+.btn-default:hover,
+.btn-default.hover,
+.btn-default:active,
+.btn-default.active,
+.open > .dropdown-toggle.btn-default,
+.btn-default:active:hover,
+.btn-default.active:hover,
+.open > .dropdown-toggle.btn-default:hover,
+.btn-default:active:focus,
+.btn-default.active:focus,
+.open > .dropdown-toggle.btn-default:focus,
+.btn-default:active.focus,
+.btn-default.active.focus,
+.open > .dropdown-toggle.btn-default.focus {
+  color: var(--pri);
+  background-color: var(--font-color-75); 
+  border-color: transparent;
+}
+
+/* Dropdown Menu Border */
+.dropdown-menu {
+  background-color: var(--heading-color-75);
+  color: var(--pri);
+  border: transparent; 
+}
+/* Dropdown Menu: Inactive */
+.dropdown-menu>li>a {
+  background-color: transparent;
+  color: var(--pri);
+}
+/* Dropdown Menu: Active */
+.dropdown-menu > li > a:hover,
+.dropdown-menu > li > a:focus,
+.dropdown-menu > .active > a,
+.dropdown-menu > .active > a:hover,
+.dropdown-menu > .active > a:focus {
+  color: var(--heading-color);
+  background-color: var(--pri);
+}
+
+/*
+=========================================
+    Tables
+=========================================
+*/
+/* Tables */
+table {
+  width: 100%;
+}
+
+/* Cell Adjustments */
+th, td {
+  padding: 1rem 2rem;
+}
+
+/* Normal Cells */
+table,
+.table,
+.table>tbody>tr>th,
+.table>tfoot>tr>th,
+.table>tbody>tr>td,
+.table>tfoot>tr>td {
+  font-family: var(--font-family);
+  border-color: transparent;
+}
+
+td {
+  color: var(--font-color);
+}
+
+/* Header Cells */
+th {
+  font-weight: normal;
+  color: var(--heading-color)
+}
+thead tr
+{
+  border-bottom: 1px solid var(--heading-color);
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+thead tr th
+{
+  border-bottom: 0px;
+}
+/*
+=========================================
+    Highlights & Statements
+=========================================
+*/
+.hl {
+  font-weight: bold;
+  color: var(--heading-color);
+}
+.st {
+  display: block;
+  padding: 0.5rem 0px 0.5rem 1rem;
+  margin: 2rem 0px 2rem 0px;
+  color: var(--font-color);
+  font-weight: 500;
+  border-left: 5px solid var(--font-color);
+}

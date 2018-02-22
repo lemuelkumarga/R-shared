@@ -1,0 +1,111 @@
+/* CSS definitions for Github */
+
+/* =======================================
+            COLOR DEFINITIONS
+======================================== */
+
+/* Base Colors */
+:root {
+    --pri: #ffffff; /* For backgrounds */
+    --pri-50: #ffffff80; /* 50% opacity */
+    --pri-75: #ffffffbf; /* 75% opacity */
+    --sec: #343a40; /* For alternate backgrounds */
+    --sec-50: #343a4080; /* 50% opacity */
+    --sec-75: #343a40bf; /* 75% opacity */
+    --heading-color: #222222;
+    --heading-color-50: #22222280;
+    --heading-color-75: #222222bf;
+    --font-color: #222222;
+    --font-color-50: #22222280;
+    --font-color-75: #222222bf;
+}
+
+/* Color Palette */
+:root {
+	--color-1: #457bb7;
+	--color-2: #658E78;
+	--color-3: #b55c5c;
+	--color-4: #7558a0;
+	--color-5: #ccb849;
+}
+
+/* By Hue */
+:root {
+    --yellow: #ccb849;
+    --orange: #c68159;
+    --red: #b55c5c;
+    --purple: #7558a0;
+    --blue: #457bb7;
+    --cyan: #67a3af;
+    --green: #658E78;
+}
+
+/* =======================================
+            FONT DEFINITIONS
+======================================== */
+
+:root {
+    --heading-family: 'Source Sans Pro', sans-serif;
+    --font-family: 'Source Sans Pro', sans-serif;
+    --code-family: monospace;
+}
+
+/* =======================================
+            FONT HEADINGS
+======================================== */
+
+/* Spacing between Fonts */
+h1, h2, h3, h4, h5, h6 {
+    line-height: 1.2;
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
+/* Font Styles */
+h1, h2, h3, h4 {
+    font-family: var(--heading-family);
+    color: var(--heading-color);
+    font-weight: 300;
+}
+
+h5, h6 {
+    font-family: var(--font-family);
+    color: var(--heading-color);
+    font-weight: 400;
+}
+
+p, body {
+    font-family: var(--font-family);
+    color: var(--font-color);
+    font-weight: 400;
+}
+
+code {
+  font-size: inherit;
+  font-weight: inherit;
+  font-family:  var(--code-family);
+  color: inherit;
+}
+
+/* Font Sizes */
+h1 { font-size: 5em; }
+h2 { font-size: 2.5em; }
+h3 { font-size: 2em; }
+h4 { font-size: 1.5em; }
+h5 { font-size: 1.0em; font-weight: bold; }
+h6 { font-size: 1.0em; font-style: italic; }
+p { font-size: 1.0em;}
+
+/* Font Colors */
+.yellow-text { color:var(--yellow) !important ; }
+.orange-text { color:var(--orange) !important ; }
+.red-text { color:var(--red) !important ; }
+.purple-text { color:var(--purple) !important ; }
+.blue-text { color:var(--blue) !important ; }
+.cyan-text { color:var(--cyan) !important ; }
+.green-text { color:var(--green) !important ; }
+.color-1-text { color:var(--color-1) !important ; }
+.color-2-text { color:var(--color-2) !important ; }
+.color-3-text { color:var(--color-3) !important ; }
+.color-4-text { color:var(--color-4) !important ; }
+.color-5-text { color:var(--color-5) !important ; }
