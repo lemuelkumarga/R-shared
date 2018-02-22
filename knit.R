@@ -21,12 +21,13 @@ knitter <- function(inputFile, encoding) {
                     output_file = html_file); 
   
   # md output
-  md_output <- rmarkdown::md_document()  
-  md_file <- file.path(dirname(inputFile), 'README.md')
-  rmarkdown::render(inputFile, 
-                    output_format=md_output, 
-                    encoding = encoding, 
-                    output_file = md_file); 
+  # md_output <- rmarkdown::md_document()  
+  # md_file <- file.path(dirname(inputFile), 'README.md')
+  # rmarkdown::render(inputFile, 
+  #                   output_format=md_output, 
+  #                   encoding = encoding, 
+  #                   output_file = md_file); 
+  system('mv index.md README.md');
   
   system('rm -rf README_files');
 }

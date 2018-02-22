@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:100,200,300,400,500,600,700,800,900');
+
 /* CSS definitions for Github */
 
 /* =======================================
@@ -22,11 +24,11 @@
 
 /* Color Palette */
 :root {
-	--color-1: #457bb7;
-	--color-2: #658E78;
-	--color-3: #b55c5c;
-	--color-4: #7558a0;
-	--color-5: #ccb849;
+    --color-1: #457bb7;
+    --color-2: #658E78;
+    --color-3: #b55c5c;
+    --color-4: #7558a0;
+    --color-5: #ccb849;
 }
 
 /* By Hue */
@@ -109,3 +111,5 @@ p { font-size: 1.0em;}
 .color-3-text { color:var(--color-3) !important ; }
 .color-4-text { color:var(--color-4) !important ; }
 .color-5-text { color:var(--color-5) !important ; }
+
+
