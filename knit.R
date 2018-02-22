@@ -9,8 +9,9 @@ knitter <- function(inputFile, encoding) {
   
   # html output
   html_output <- rmarkdown::html_document(css=css, 
-                                          code_folding='hide', 
-                                          self_contained=TRUE, 
+                                          code_folding='hide',
+                                          keep_md = TRUE,
+                                          self_contained=TRUE,
                                           theme='cosmo', 
                                           toc=TRUE, 
                                           toc_depth=4)
