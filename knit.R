@@ -10,7 +10,6 @@ knitter <- function(inputFile, encoding) {
   # html output
   html_output <- rmarkdown::html_document(css=css, 
                                           code_folding='hide',
-                                          keep_md = TRUE,
                                           self_contained=TRUE,
                                           theme='cosmo', 
                                           toc=TRUE, 
@@ -22,13 +21,14 @@ knitter <- function(inputFile, encoding) {
                     output_file = html_file); 
   
   # md output
-  # md_output <- rmarkdown::md_document()  
-  # md_file <- file.path(dirname(inputFile), 'README.md')
-  # rmarkdown::render(inputFile, 
-  #                   output_format=md_output, 
-  #                   encoding = encoding, 
-  #                   output_file = md_file); 
-  system('mv index.md README.md');
+  md_output <- rmarkdown::github_document(toc = TRUE,
+                                          toc_depth = 4,
+                                          html_preview = TRUE)
+  md_file <- file.path(dirname(inputFile), 'README.md')
+  rmarkdown::render(inputFile,
+                    output_format=md_output,
+                    encoding = encoding,
+                    output_file = md_file);
   
   system('rm -rf README_files');
 }
