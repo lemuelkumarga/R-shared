@@ -14,12 +14,12 @@
     --sec: #343a40; /* For alternate backgrounds */
     --sec-50: #343a4080; /* 50% opacity */
     --sec-75: #343a40bf; /* 75% opacity */
-    --heading-color: #222222;
-    --heading-color-50: #22222280;
-    --heading-color-75: #222222bf;
-    --font-color: #222222;
-    --font-color-50: #22222280;
-    --font-color-75: #222222bf;
+    --heading-color: #000000;
+    --heading-color-50: #00000080;
+    --heading-color-75: #000000bf;
+    --font-color: #000000;
+    --font-color-50: #00000080;
+    --font-color-75: #000000bf;
 }
 
 /* Color Palette */
