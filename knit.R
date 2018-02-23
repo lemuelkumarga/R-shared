@@ -39,14 +39,26 @@ knitter <- function(inputFile,
     # Draw a Horizontal Line to indicate the end of prepend
     system('echo --- | cat - README.md > tmp.md')
     system('mv tmp.md README.md')
+    
     # Prepend specified markdowns 
     for (md_file in rev(prepend_mds)) {
-      system(paste0('cat ',md_file,' | cat - README.md > tmp.md'))
-      system('mv tmp.md README.md')
+      if (file.exists(md_file)) {
+        system(paste0('cat ',md_file,' | cat - README.md > tmp.md'))
+        system('mv tmp.md README.md')
+      }
     }
+    
+    # Take special care for inputFile of the form "./main.Rmd"
+    if (grepl('^\\.\\/',inputFile)) {
+      project_name <- getwd()
+    } else {
+      project_name <- dirname(inputFile)
+    }
+    project_name <- basename(project_name)
+    
     # Replace projects with actual name of the project
-    project_name <- basename(dirname(inputFile))
-    system(paste0("sed -i 's/<project>/",project_name,"/g' README.md"))
+    system(paste0("sed 's/<project>/",project_name,"/g' README.md > tmp.md"))
+    system('mv tmp.md README.md')
   }
   
   system('rm -rf README_files');
