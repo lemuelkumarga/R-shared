@@ -1,5 +1,7 @@
 
-knitter <- function(inputFile, encoding) {
+knitter <- function(inputFile, 
+                    encoding, 
+                    prepend_mds = c("shared/md/requirements.md","shared/md/cloning.md")) {
   
   # First collect all the csss that are available
   css = c('shared/css/defaults.css');
@@ -29,6 +31,21 @@ knitter <- function(inputFile, encoding) {
                     output_format=md_output,
                     encoding = encoding,
                     output_file = md_file);
+
+
+  if (length(prepend_mds)) {
+    # Draw a Horizontal Line to indicate the end of prepend
+    system('echo --- | cat - README.md > tmp.md')
+    system('mv tmp.md README.md')
+    # Prepend specified markdowns 
+    for (md_file in rev(prepend_mds)) {
+      system(paste0('cat ',md_file,' | cat - README.md > tmp.md'))
+      system('mv tmp.md README.md')
+    }
+    # Replace projects with actual name of the project
+    project_name <- basename(dirname(inputFile))
+    system(paste0("sed -i 's/<project>/",project_name,"/g' README.md"))
+  }
   
   system('rm -rf README_files');
 }
