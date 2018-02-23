@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:100,200,300,400,500,600,700,800,900');
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:100,200,300,400,500,600,700,800,900%7CUbuntu+Mono:100,200,300,400,500,600,700,800,900');
 
 /* CSS definitions for Github */
 
@@ -49,7 +49,7 @@
 :root {
     --heading-family: 'Source Sans Pro', sans-serif;
     --font-family: 'Source Sans Pro', sans-serif;
-    --code-family: monospace;
+    --code-family: 'Ubuntu Mono', monospace;
 }
 
 /* =======================================
