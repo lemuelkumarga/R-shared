@@ -9,7 +9,7 @@ load_or_install.packages <- function(list_of_packages) {
   # Install packages if any
   new_packages <- list_of_packages[!(list_of_packages %in% installed.packages()[,"Package"])]
   if (length(new_packages)) {
-    install.packages(new_packages, dependencies = TRUE)
+    install.packages(new_packages, dependencies = TRUE, repos = "http://cran.us.r-project.org")
   }
   
   # Load packages
