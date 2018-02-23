@@ -12,7 +12,7 @@ knitter <- function(inputFile,
   # html output
   html_output <- rmarkdown::html_document(css=css, 
                                           code_folding='hide',
-                                          self_contained=FALSE,
+                                          self_contained=TRUE,
                                           theme='cosmo', 
                                           toc=TRUE, 
                                           toc_depth=4)
