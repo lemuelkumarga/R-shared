@@ -179,3 +179,19 @@ theme_lk <- function() {
 }
 
 ## ---- end-of-init_ggplot
+
+# Pander Tables ----
+# ---- init_pander
+load_or_install.packages("pander")
+
+# Fix cell text alignment to left
+panderOptions('table.alignment.default',
+              function(df){ ifelse(sapply(df, is.numeric), 'center', 'left') })
+
+# Fix when to split table
+panderOptions('table.split.table',80)
+
+# Fix style
+panderOptions('table.style','multiline')
+
+## ---- end-of-init_pander

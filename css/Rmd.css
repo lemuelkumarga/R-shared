@@ -163,8 +163,14 @@ table {
 }
 
 /* Cell Adjustments */
-th, td {
-  padding: 1rem 2rem;
+th, td,
+.table-condensed>thead>tr>th, 
+.table-condensed>tbody>tr>th, 
+.table-condensed>tfoot>tr>th, 
+.table-condensed>thead>tr>td, 
+.table-condensed>tbody>tr>td, 
+.table-condensed>tfoot>tr>td {
+	padding:  1rem 2rem;
 }
 
 /* Normal Cells */
@@ -193,10 +199,17 @@ thead tr
   padding-top: 1rem;
   padding-bottom: 1rem;
 }
+.table > thead > tr > th,
 thead tr th
 {
-  border-bottom: 0px;
+  border-bottom: 1px solid var(--heading-color);
 }
+
+/* Caption */
+table caption {
+  color: var(--font-color-50);
+}
+
 /*
 =========================================
     Highlights & Statements
