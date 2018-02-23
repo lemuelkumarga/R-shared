@@ -1,7 +1,7 @@
 
 knitter <- function(inputFile, 
                     encoding, 
-                    prepend_mds = c("shared/md/requirements.md","shared/md/cloning.md")) {
+                    prepend_mds = c("shared/md/website.md","shared/md/requirements.md","shared/md/cloning.md")) {
   
   # First collect all the csss that are available
   css = c('shared/css/defaults.css');
