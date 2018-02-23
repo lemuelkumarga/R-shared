@@ -5,8 +5,8 @@ knitter <- function(inputFile,
   
   # First collect all the csss that are available
   css = c('shared/css/defaults.css');
-  if (file.exists('../../../shared/css/definitions.css')) { css = c(css, css,'../../../shared/css/definitions.css'); } 
-  if (file.exists('../../../shared/css/general.css')) { css = c(css, css,'../../../shared/css/general.css'); } 
+  if (file.exists('../../shared/css/definitions.css')) { css = c(css, css,'../../../shared/css/definitions.css'); } 
+  if (file.exists('../../shared/css/general.css')) { css = c(css, css,'../../../shared/css/general.css'); } 
   css = c(css, 'shared/css/Rmd.css'); 
   
   # html output
@@ -25,7 +25,7 @@ knitter <- function(inputFile,
   # md output
   md_output <- rmarkdown::github_document(toc = TRUE,
                                           toc_depth = 4,
-                                          html_preview = TRUE)
+                                          html_preview = FALSE)
   md_file <- file.path(dirname(inputFile), 'README.md')
   rmarkdown::render(inputFile,
                     output_format=md_output,
