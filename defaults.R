@@ -1,6 +1,9 @@
 # Default setup for R markdown
 # Copyright Lemuel Kumarga
 
+# Load Global Variables
+source("shared/variables.R");
+
 # Load Packages or Install if Necessary ----
 ## ---- load_packages
 
@@ -76,7 +79,7 @@ load_css_variables <- function(css_files) {
   return(css_variables)
 }
 
-css_variables <- load_css_variables(c("../../../shared/css/definitions.css","shared/css/defaults.css"))
+css_variables <- load_css_variables(c(paste0(website_css_dir,"definitions.css"),"shared/css/defaults.css"))
 
 ## ---- end-of-load_css
 

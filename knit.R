@@ -1,3 +1,5 @@
+# Load Global Variables
+source("shared/variables.R");
 
 knitter <- function(inputFile, 
                     encoding, 
@@ -5,14 +7,14 @@ knitter <- function(inputFile,
   
   # First collect all the csss that are available
   css = c('shared/css/defaults.css');
-  if (file.exists('../../shared/css/definitions.css')) { css = c(css, css,'../../../shared/css/definitions.css'); } 
-  if (file.exists('../../shared/css/general.css')) { css = c(css, css,'../../../shared/css/general.css'); } 
+  if (file.exists(paste0(website_css_dir,'definitions.css'))) { css = c(css, css,paste0(website_css_dir,'definitions.css')); } 
+  if (file.exists(paste0(website_css_dir,'general.css'))) { css = c(css, css,paste0(website_css_dir,'general.css')); } 
   css = c(css, 'shared/css/Rmd.css'); 
   
   # html output
   html_output <- rmarkdown::html_document(css=css, 
                                           code_folding='hide',
-                                          self_contained=TRUE,
+                                          self_contained=FALSE,
                                           theme='cosmo', 
                                           toc=TRUE, 
                                           toc_depth=4)
