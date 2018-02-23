@@ -25,7 +25,7 @@ data_overview <- function(data,
                                                       `[[`(cname) %>%
                                                       unique() -> filtered_set
                                                     filtered_set[1:min(5, length(filtered_set))] %>%
-                                                      paste(collapse=' | ')
+                                                      paste(collapse=' // ')
                                                   })
                   cols_summary$EmptyValues <- lapply(cols_summary$ColumnNames,
                                                      function(cname) {
