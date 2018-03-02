@@ -5,7 +5,7 @@
 
 /*
 =========================================
-    Headers
+    Headers & Paragraphs
 =========================================
 */
 
@@ -19,6 +19,9 @@ h1.title {
   font-size: 3.5em;
 }
 
+@media (min-width: 370px) {
+	p { text-align: justify; }
+}
 /*
 =========================================
     Table of Contents
