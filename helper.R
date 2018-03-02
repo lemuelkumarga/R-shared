@@ -16,11 +16,11 @@ data_overview <- function(data,
                           null_fn = function(cname) { paste0(cname," == '' | is.na(",cname,")")}) {
                   
                   cols_summary <- data.frame(ColumnNames = colnames(data))
-                  cols_summary$Type <- lapply(training_set, class) %>%
+                  cols_summary$Type <- lapply(data, class) %>%
                     toupper()
                   cols_summary$Examples <- lapply(cols_summary$ColumnNames,
                                                   function(cname) {
-                                                    training_set %>%
+                                                    data %>%
                                                       filter_(paste0("!(",null_fn(cname),")")) %>%
                                                       `[[`(cname) %>%
                                                       unique() -> filtered_set
@@ -29,14 +29,14 @@ data_overview <- function(data,
                                                   })
                   cols_summary$EmptyValues <- lapply(cols_summary$ColumnNames,
                                                      function(cname) {
-                                                       training_set %>%
+                                                       data %>%
                                                          filter_(null_fn(cname)) %>%
                                                          nrow()
                                                      })
                   cols_summary$PctFilled <- lapply(cols_summary$EmptyValues,
                                                    function(x) {
-                                                     ((nrow(training_set) - x) / nrow(training_set)) %>%
-                                                       `*`(100) %>% round(0) %>%
+                                                     ((nrow(data) - x) / nrow(data)) %>%
+                                                       `*`(100) %>% floor() %>%
                                                        paste0("%")
                                                    })
                   
