@@ -163,8 +163,7 @@ pre:not([class]) {
 /* Table's Responsive Container */
 @media screen and (max-width: 767px) {
 	.table-responsive {
-	  padding: 1rem;
-	  border: 1px solid var(--font-color-50)
+	  border-color: inherit;
 	}	
 
 	/* Allow new lines within the responsive container*/
@@ -178,11 +177,20 @@ pre:not([class]) {
 	}
 }
 
+.table-responsive {
+  width: 98%;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid transparent;
+}
 
 /* Tables */
 table {
-  min-width: 767px;
-  width: 100%;
+  width: auto !important;
+  min-width: 500px;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* Cell Adjustments */
