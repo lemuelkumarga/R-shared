@@ -160,6 +160,14 @@ pre:not([class]) {
     Tables
 =========================================
 */
+/* Responsive container for tables */
+@media screen and (max-width: 767px) {
+	.table-responsive {
+	  padding: 1rem;
+	  border: 1px solid var(--font-color-50)
+	}	
+}
+
 /* Tables */
 table {
   width: 100%;

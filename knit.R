@@ -24,6 +24,10 @@ knitter <- function(inputFile,
                     encoding = encoding, 
                     output_file = html_file); 
   
+  # Create a responsive table container for all tables
+  system(paste0("sed 's/<table/<div class=",'"',"table-responsive",'"',"><table/g' index.html | sed 's/<\\/table>/<\\/table><\\/div>/g' > tmp.html"))
+  system('mv tmp.html index.html')
+  
   # md output
   md_output <- rmarkdown::github_document(toc = TRUE,
                                           toc_depth = 4,
