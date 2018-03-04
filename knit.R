@@ -17,7 +17,7 @@ knitter <- function(inputFile,
                                           self_contained=FALSE,
                                           theme='cosmo', 
                                           toc=TRUE, 
-                                          toc_depth=4)
+                                          toc_depth=3)
   html_file <- file.path(dirname(inputFile), 'index.html')
   rmarkdown::render(inputFile, 
                     output_format=html_output, 
