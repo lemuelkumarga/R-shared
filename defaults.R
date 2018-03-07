@@ -125,7 +125,7 @@ get_color <- function(inp = "", fadingFactor = 1.) {
     return(tmp_hue_palette[[inp]])
   } else if (inp == "palette") {
     # If palette is requested, return the palette
-    return(colorRampPalette(as.character(tmp_color_palette)))
+    return(colorRampPalette(as.character(tmp_hue_palette)))
   } else {
     return(bg_color)
   }
