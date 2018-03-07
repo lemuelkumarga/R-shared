@@ -104,24 +104,31 @@ hue_palette <- c("yellow",
 names(hue_palette) <- hue_palette
 hue_palette <- sapply(hue_palette, function(col) { css_variables[[paste0("--",col)]]})
 
-get_color <- function(inp = "") { 
+fade_color <- function(color, fadingFactor) {
+  c_palette <- colorRamp(c(bg_color, color))
+  return(rgb(c_palette(fadingFactor),maxColorValue=256))
+}
+
+get_color <- function(inp = "", fadingFactor = 1.) { 
+  
+  tmp_color_palette <- sapply(color_palette, function(x) {fade_color(x, fadingFactor)})
+  tmp_hue_palette <- sapply(hue_palette, function(x) {fade_color(x, fadingFactor)})
   
   if (inp == "") {
     # If nothing is specified, return the list of color palettes
-    return(as.character(color_palette))
+    return (as.character(tmp_color_palette))
   } else if (is.numeric(inp)) {
     # If index is specified, return the index of the color palette
-    return(color_palette[[(inp + length(color_palette)) %% length(color_palette)]])
-  } else if (inp %in% names(hue_palette)) {
+    return(tmp_color_palette[[(inp + length(tmp_color_palette)) %% length(tmp_color_palette)]])
+  } else if (inp %in% names(tmp_hue_palette)) {
     # If palette is requested, return the palette
-    return(hue_palette[[inp]])
+    return(tmp_hue_palette[[inp]])
   } else if (inp == "palette") {
     # If palette is requested, return the palette
-    return(colorRampPalette(as.character(color_palette)))
+    return(colorRampPalette(as.character(tmp_color_palette)))
   } else {
     return(bg_color)
   }
-  
 }
 
 ## ---- end-of-init_colors
