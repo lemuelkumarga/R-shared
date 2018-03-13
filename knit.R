@@ -11,10 +11,14 @@ knitter <- function(inputFile,
   if (file.exists(paste0(website_css_dir,'general.css'))) { css = c(css, css,paste0(website_css_dir,'general.css')); } 
   css = c(css, 'shared/css/Rmd.css'); 
   
+  # Then collects all the additional JS plugins
+  js = rmarkdown::includes(in_header= "shared/js/js.html")
+  
   # html output
   html_output <- rmarkdown::html_document(css=css, 
                                           code_folding='hide',
                                           self_contained=FALSE,
+                                          includes=js,
                                           theme='cosmo', 
                                           toc=TRUE, 
                                           toc_depth=3)

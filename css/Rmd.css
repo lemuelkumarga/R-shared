@@ -20,7 +20,7 @@ h1.title {
 }
 
 @media (min-width: 370px) {
-	p { text-align: justify; }
+	p, ul, ol { text-align: justify; }
 }
 /*
 =========================================
