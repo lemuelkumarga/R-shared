@@ -1,5 +1,8 @@
 $(document).ready(function(){
-    $('[data-toggle="popover"]').popover({ trigger : "hover", 
+
+    
+
+    $('[data-toggle="popover"]').popover({ trigger : "hover focus", 
     									   placement : function (context, source) {
 	    									   				var win_y = $(document).scrollTop() + $(window).height();
 	    									   				var win_x = $(window).width();
@@ -14,5 +17,6 @@ $(document).ready(function(){
 	    									   				 	return "bottom"
 	    									   				}
 													    } 
-										});   
+										}); 
+
 });
