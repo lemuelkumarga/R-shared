@@ -106,31 +106,22 @@ pre:not([class]) {
     Code Buttons
 =========================================
 */
-/* Code Buttons:; Inactive */
-.btn-default {
+/* Code Buttons: Folded */
+.btn-default[aria-expanded="false"] {
   color: var(--font-color-75);
   background-color: transparent;
   border-color: transparent;
 }
-/* Code Buttons:; Active */
-.btn-default:focus,
-.btn-default.focus,
-.btn-default:hover,
-.btn-default.hover,
-.btn-default:active,
-.btn-default.active,
-.open > .dropdown-toggle.btn-default,
-.btn-default:active:hover,
-.btn-default.active:hover,
-.open > .dropdown-toggle.btn-default:hover,
-.btn-default:active:focus,
-.btn-default.active:focus,
-.open > .dropdown-toggle.btn-default:focus,
-.btn-default:active.focus,
-.btn-default.active.focus,
-.open > .dropdown-toggle.btn-default.focus {
+/* Code Buttons: unfolded */
+.btn-default[aria-expanded="true"] {
   color: var(--pri);
   background-color: var(--font-color-75); 
+  border-color: transparent;
+}
+
+.btn-default:hover {
+  color: var(--pri);
+  background-color: var(--font-color-50); 
   border-color: transparent;
 }
 
@@ -146,11 +137,7 @@ pre:not([class]) {
   color: var(--pri);
 }
 /* Dropdown Menu: Active */
-.dropdown-menu > li > a:hover,
-.dropdown-menu > li > a:focus,
-.dropdown-menu > .active > a,
-.dropdown-menu > .active > a:hover,
-.dropdown-menu > .active > a:focus {
+.dropdown-menu > li > a:hover {
   color: var(--heading-color);
   background-color: var(--pri);
 }
