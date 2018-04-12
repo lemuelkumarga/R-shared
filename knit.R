@@ -7,10 +7,8 @@ knitter <- function(inputFile,
   
   # First collect all the csss that are available
   css = c('shared/css/defaults.css');
-  css = c(css, css,paste0(website_css_dir,'definitions.css'));
-  css = c(css, css,paste0(website_css_dir,'general.css')); 
-  #if (file.exists(paste0(website_css_dir,'definitions.css'))) { css = c(css, css,paste0(website_css_dir,'definitions.css')); } 
-  #if (file.exists(paste0(website_css_dir,'general.css'))) { css = c(css, css,paste0(website_css_dir,'general.css')); } 
+  if (file.exists(paste0(website_css_dir,'definitions.css'))) { css = c(css, css,paste0(website_css_dir,'definitions.css')); } 
+  if (file.exists(paste0(website_css_dir,'general.css'))) { css = c(css, css,paste0(website_css_dir,'general.css')); } 
   css = c(css, 'shared/css/Rmd.css'); 
   
   # Then collects all the additional JS plugins
