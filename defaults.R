@@ -24,6 +24,7 @@ load_or_install.packages <- function(list_of_packages) {
 # Load CSS Styles ----
 ## ---- load_css
 load_or_install.packages("dplyr")
+css_files = c(paste0(website_css_dir,"definitions.css"),"shared/css/defaults.css")
 
 load_css_variables <- function(css_files) {
   # Perform a cascading load, we find the first available file
@@ -43,34 +44,17 @@ load_css_variables <- function(css_files) {
   # Load the css
   contents <- readChar(css_to_load, file.info(css_to_load)$size) %>% 
               { gsub('[\r\n\t]','',.) } %>%
-              # Split Blocks
-              { unlist(strsplit(.,"}")) } %>%
-              # Find the ones that contain ":root"
-              { .[grepl(":root",.)]} %>%
-              # Remove any letters before root 
-              { unlist(strsplit(.,":root")) } %>%  
-              # Only select the body inside root 
-              { .[grepl("\\{",.)] } %>%
-              # Split the variables within root
-              { unlist(strsplit(.,"\\{|;")) } %>%
-              # Remove comments embedded within the body
-              { unlist(strsplit(.,"\\*/")) } %>%
-              { .[!grepl("/\\*",.)] } %>%
-              # Trim spaces
-              trimws(.) %>%
-              # Remove empty strings
-              .[. != ""] %>%
-              # Find Key-Value Pairs 
-              {
-                lapply(., function(x) {
-                  unlist(strsplit(x,":|,")) %>%
-                  # Remove any string quotations
-                  gsub('"','',.) %>%
-                  gsub("'","",.) %>%
-                  # Trim Spacing
-                  trimws()
-                })
-              }
+              # Remove Comments %>%
+              { gsub('/\\*[^\\*]*\\*/','',.) } %>%
+              # Find Root Blocks
+              { regmatches(.,gregexpr(':root[ ]*\\{([^\\{\\}]*)\\}',.))} %>%
+              { sapply(.,function(s) { gsub(':root[ ]*\\{|\\}','',s) })} %>%
+              # Get all Variables
+              { strsplit(paste(.,collapse=' '),";") } %>%
+              # Trim Each Variable String
+              { c(sapply(.,trimws, which="both"))} %>%
+              # Split Variable With Value
+              { sapply(.,function(s) { strsplit(s,"[ ]*:[ ']*|[' ]*,[' ]*")})}
   
   # Create css variables
   css_variables <- sapply(contents, function (x) { x[2:length(x)] })
@@ -79,9 +63,16 @@ load_css_variables <- function(css_files) {
   return(css_variables)
 }
 
-css_variables <- load_css_variables(c(paste0(website_css_dir,"definitions.css"),"shared/css/defaults.css"))
+css_variables <- load_css_variables(css_files)
 
 ## ---- end-of-load_css
+
+# Font Styles ----
+## ---- init_font_styles
+
+def_font <- css_variables[["--font-family"]][1]
+
+## ---- end-of-init_font_styles
 
 # Colors ----
 ## ---- init_colors
@@ -104,9 +95,13 @@ hue_palette <- c("yellow",
 names(hue_palette) <- hue_palette
 hue_palette <- sapply(hue_palette, function(col) { css_variables[[paste0("--",col)]]})
 
+pollute_color <- function(original_col, pollute_col, ratio) {
+  c_palette <- colorRamp(c(original_col, pollute_col))
+  return(rgb(c_palette(ratio),maxColorValue=255))
+}
+
 fade_color <- function(color, fadingFactor) {
-  c_palette <- colorRamp(c(bg_color, color))
-  return(rgb(c_palette(fadingFactor),maxColorValue=256))
+  return(pollute_color(bg_color, color, fadingFactor))
 }
 
 get_color <- function(inp = "", fadingFactor = 1.) { 
@@ -133,12 +128,21 @@ get_color <- function(inp = "", fadingFactor = 1.) {
 
 ## ---- end-of-init_colors
 
-# Font Styles ----
-## ---- init_font_styles
+# Pander Tables ----
+# ---- init_pander
+load_or_install.packages("pander")
 
-def_font <- css_variables[["--font-family"]][1]
+# Fix cell text alignment to left
+panderOptions('table.alignment.default',
+              function(df){ ifelse(sapply(df, is.numeric), 'center', 'left') })
 
-## ---- end-of-init_font_styles
+# Fix when to split table
+panderOptions('table.split.table',80)
+
+# Fix style
+panderOptions('table.style','multiline')
+
+## ---- end-of-init_pander
 
 # GGPlot ----
 ## ---- init_ggplot
@@ -189,19 +193,3 @@ theme_lk <- function() {
 }
 
 ## ---- end-of-init_ggplot
-
-# Pander Tables ----
-# ---- init_pander
-load_or_install.packages("pander")
-
-# Fix cell text alignment to left
-panderOptions('table.alignment.default',
-              function(df){ ifelse(sapply(df, is.numeric), 'center', 'left') })
-
-# Fix when to split table
-panderOptions('table.split.table',80)
-
-# Fix style
-panderOptions('table.style','multiline')
-
-## ---- end-of-init_pander
