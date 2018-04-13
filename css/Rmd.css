@@ -19,9 +19,11 @@ h1.title {
   font-size: 3.5em;
 }
 
-@media (min-width: 370px) {
-	p, ul, ol { text-align: justify; }
+p, ul, ol { 
+  text-align: justify;
+  hyphens: auto;
 }
+
 /*
 =========================================
     Table of Contents
