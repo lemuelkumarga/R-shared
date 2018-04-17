@@ -19,9 +19,23 @@ h1.title {
   font-size: 4em;
 }
 
-h4.date {
+h4 .meta {
   color: var(--font-color-50);
+  font-style:normal;
+}
+
+h4 .by {
+  font-size: 0.6em;
+}
+
+h4 .writer {
   font-size: 1.0em;
+  padding-right: 0.5em;
+}
+
+h4 .date {
+  font-variant:small-caps;
+  font-size: 0.8em;
 }
 
 p, ul, ol { 
