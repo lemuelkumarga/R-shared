@@ -28,21 +28,18 @@ h4 .by {
   display: inline-block;
   font-size: 0.7em;
   padding-right: 0.3em;
-  vertical-align:middle;
 }
 
 h4 .writer {
   display: inline-block;
   font-size: 1.0em;
   padding-right: 0.8em;
-  vertical-align:middle;
 }
 
 h4 .date {
   display: inline-block;
   font-family: var(--font-family);
   font-size: 0.8em;
-  vertical-align:middle;
 }
 
 p, ul, ol { 
