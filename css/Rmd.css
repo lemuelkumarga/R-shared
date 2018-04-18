@@ -24,26 +24,12 @@ h4 .meta {
   font-style:normal;
 }
 
-h4 .by {
-  display: inline-block;
-  font-size: 0.7em;
-  padding-right: 0.3em;
-}
-
 h4 .writer {
-  display: inline-block;
   font-size: 1.0em;
-  padding-right: 1.0em;
 }
 
 h4 .date {
-  display: inline-block;
   font-size: 0.8em;
-}
-
-p, ul, ol { 
-  text-align: justify;
-  hyphens: auto;
 }
 
 /*
