@@ -22,14 +22,17 @@ h1.title {
 h4 .meta {
   color: var(--font-color-50);
   font-style:normal;
+
 }
 
-h4 .writer {
-  font-size: 1.0em;
+h4.author {
+  font-size: 1.5em;
+  margin-bottom: 0.5rem;
 }
 
-h4 .date {
-  font-size: 0.8em;
+h4.date {
+  font-size: 1.1em;
+  margin-top: 0.5rem;
 }
 
 /*
