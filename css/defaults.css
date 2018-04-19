@@ -90,6 +90,7 @@ code {
 }
 
 /* Font Sizes */
+body { font-size: 14px; }
 h1 { font-size: 4em; }
 h2 { font-size: 2.5em; }
 h3 { font-size: 2em; }
