@@ -114,7 +114,7 @@ get_color <- function(inp = "", fadingFactor = 1.) {
     return (as.character(tmp_color_palette))
   } else if (is.numeric(inp)) {
     # If index is specified, return the index of the color palette
-    return(tmp_color_palette[[(inp + length(tmp_color_palette)) %% length(tmp_color_palette)]])
+    return(tmp_color_palette[[((inp - 1 + length(tmp_color_palette)) %% length(tmp_color_palette)) + 1]])
   } else if (inp %in% names(tmp_hue_palette)) {
     # If palette is requested, return the palette
     return(tmp_hue_palette[[inp]])

@@ -257,6 +257,17 @@ table caption {
 
 /*
 =========================================
+    HTML Widgets
+=========================================
+*/
+.html-widget {
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 2em;
+}
+
+/*
+=========================================
     Highlights & Statements
 =========================================
 */
