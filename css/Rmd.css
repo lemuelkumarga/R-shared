@@ -3,6 +3,19 @@
    Copyright: Lemuel Kumarga
 */
 
+
+/*
+=========================================
+    Container
+=========================================
+*/
+
+.main-container.container-fluid {
+        padding: 0px 20px;
+	width: 95%;
+	max-width: 950px;
+}
+
 /*
 =========================================
     Headers & Paragraphs
