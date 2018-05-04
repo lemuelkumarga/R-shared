@@ -273,10 +273,19 @@ table caption {
     HTML Widgets
 =========================================
 */
+.html-widget-container {
+	overflow-x: scroll;
+}
+
 .html-widget {
 	margin-left: auto;
 	margin-right: auto;
 	margin-bottom: 2em;
+}
+
+.html-widget svg text {
+	font-family: var(--font-family);
+	font-size: 1.0em;
 }
 
 /*
