@@ -147,7 +147,10 @@ panderOptions('table.style','multiline')
 # GGPlot ----
 ## ---- init_ggplot
 
-theme_lk <- function() {
+theme_lk <- function(fmt_plot = TRUE,
+                     fmt_legend = TRUE,
+                     fmt_x = TRUE,
+                     fmt_y = TRUE) {
   
   bg_n_plots <- theme(
     text = element_text(family=def_font, colour=txt_color),
@@ -189,7 +192,12 @@ theme_lk <- function() {
     panel.grid.minor.y = element_line(colour=NA)
   )
   
-  bg_n_plots + legends + x_axis + y_axis
+  output <- theme()
+  if (fmt_plot) { output <- output + bg_n_plots }
+  if (fmt_legend) { output <- output + legends }
+  if (fmt_x) { output <- output + x_axis }
+  if (fmt_y) { output <- output + y_axis }
+  output
 }
 
 ## ---- end-of-init_ggplot
