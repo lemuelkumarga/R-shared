@@ -283,10 +283,12 @@ table caption {
 	margin-bottom: 2em;
 }
 
+.html-widget .info,
 .html-widget svg text {
 	font-family: var(--font-family);
 	font-size: 1.0em;
 }
+
 
 /*
 =========================================

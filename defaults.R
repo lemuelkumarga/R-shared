@@ -79,6 +79,8 @@ def_font <- css_variables[["--font-family"]][1]
 load_or_install.packages(c("grDevices","ggplot2"))
 
 bg_color <- css_variables[["--pri"]]
+sec_color <- css_variables[["--sec"]]
+heading_color <- css_variables[["--heading-color"]]
 txt_color <- css_variables[["--font-color"]]
 ltxt_color <- alpha(txt_color,0.75)
 
