@@ -274,7 +274,7 @@ table caption {
 =========================================
 */
 .html-widget-container {
-	overflow-x: scroll;
+	overflow-x: auto;
 }
 
 .html-widget {
