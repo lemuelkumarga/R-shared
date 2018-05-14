@@ -44,3 +44,18 @@ data_overview <- function(data,
 }
 
 ## ---- end-of-data_overview
+
+## ---- cache
+
+# After running the function, save the output into a cache file
+# @input name the name of the cache (exclude extensions)
+# @input inputs a list of inputs for the function
+# @input f the function to be run
+cache_dir <- "cache/"
+cache <- function(name, inputs, f) {
+  cache_file <- paste0(cache_dir,name,".RDS")
+  if (file.exists(cache_file)) { readRDS(cache_file) }
+  else { output <- do.call(f,inputs); saveRDS(output, cache_file); output }
+}
+
+## ---- end-of-cache
