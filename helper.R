@@ -1,5 +1,5 @@
 
-## ---- data_overview
+## ---- data-overview
 
 # Provides high level information about a particular data frame
 # @input data: the data frame
@@ -43,7 +43,7 @@ data_overview <- function(data,
                   select(cols_summary, ColumnNames, Type, Examples, PctFilled)
 }
 
-## ---- end-of-data_overview
+## ---- end-of-data-overview
 
 ## ---- cache
 
@@ -59,3 +59,38 @@ cache <- function(name, inputs, f) {
 }
 
 ## ---- end-of-cache
+
+## ---- tictoc
+
+# Create a tic toc function to detect changes made by the code
+# @input tic the function to run when tic is executed. Results are stored and released later
+# @input toc the function to run when toc is executed. Takes in two values, the old value of tic
+# and the new value of tic
+# @input tic_on_toc TRUE if we automatically execute tic on the completion of toc.
+# @output a list of 3 items:
+#   storage: the value being stored when tic is run
+#   tic: the tic function to store existing value
+#   toc: the toc function to process existing value with current value
+tictoc <- function(tic, toc, tic_on_toc = FALSE) {
+  
+  tt_output <- list(storage=NA, tic=NA, toc=NA)
+  
+  tt_output$tic <- function() {
+    tt_output$storage <<- tic()
+  }
+  
+  tt_output$toc <- function() {
+    
+    old_val <- tt_output$storage
+    new_val <- tic()
+    
+    if (tic_on_toc) { tt_output$tic() }
+    
+    toc(old_val, new_val)
+  }
+  
+  tt_output
+}
+
+
+## ---- end-of-tictoc
