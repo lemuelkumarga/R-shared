@@ -155,7 +155,7 @@ theme_lk <- function(fmt_plot = TRUE,
                      fmt_y = TRUE) {
   
   bg_n_plots <- theme(
-    text = element_text(family=def_font, colour=txt_color),
+    text = element_text(family=def_font, colour=txt_color,10),
     # Background Color
     plot.background = element_rect(fill=bg_color, colour=bg_color),
     
@@ -179,8 +179,8 @@ theme_lk <- function(fmt_plot = TRUE,
   x_axis <- theme(
     axis.line.x = element_line(colour=ltxt_color),
     axis.ticks.x = element_line(colour=ltxt_color),
-    axis.title.x = element_text(colour=ltxt_color, size = 15),
-    axis.text.x = element_text(colour=ltxt_color, size = 12),
+    axis.title.x = element_text(colour=ltxt_color, size = 12),
+    axis.text.x = element_text(colour=ltxt_color, size = 10),
     panel.grid.major.x = element_line(colour=NA),
     panel.grid.minor.x = element_line(colour=NA)
   )
@@ -188,8 +188,8 @@ theme_lk <- function(fmt_plot = TRUE,
   y_axis <- theme(
     axis.line.y = element_line(colour=ltxt_color),
     axis.ticks.y = element_line(colour=ltxt_color),
-    axis.title.y = element_text(colour=ltxt_color, size = 15),
-    axis.text.y = element_text(colour=ltxt_color, size = 12),
+    axis.title.y = element_text(colour=ltxt_color, size = 12),
+    axis.text.y = element_text(colour=ltxt_color, size = 10),
     panel.grid.major.y = element_line(colour=NA),
     panel.grid.minor.y = element_line(colour=NA)
   )
