@@ -76,7 +76,7 @@ h5, h6 {
     font-weight: 400;
 }
 
-p, body {
+p, body, ul, ol {
     font-family: var(--font-family);
     color: var(--font-color);
     font-weight: 400;
