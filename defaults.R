@@ -162,7 +162,10 @@ theme_lk <- function(fmt_plot = TRUE,
     # Plot
     panel.background = element_rect(fill=alpha("#FFFFFF",0.0),colour=NA),
     panel.border = element_rect(colour=NA, fill=NA),
-    plot.margin = unit(c(20,20,20,20),'pt')
+    plot.margin = unit(c(20,20,20,20),'pt'),
+    
+    # Title
+    plot.title = element_text(size = 15)
   )
   
   legends <-  theme(
