@@ -96,8 +96,9 @@ data_overview <- function(data,
 
 ## ---- plot-overview
 
-# Load defaults.R and other necessary packages
-source(paste0(dirname(sys.frame(1)$ofile),"/defaults.R"))
+# @prereq: assumes default.R has been loaded. If not, run the default.R source.
+
+# Load dependent packages
 load_or_install.packages(c("ggplot2","dplyr","rms","GGally"))
 
 # Provides a relationship snapshot amongst features and the class
