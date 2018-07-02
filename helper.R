@@ -104,19 +104,61 @@ load_or_install.packages(c("ggplot2","dplyr","rms","GGally"))
 # Provides a relationship snapshot amongst features and the class
 # @input dataset: the dataset
 # @input response: the column name containing the observed class
+# @input rank_method: Choose different methods to determine variable ranking
+# -- independent: run linear regression for each feature independently and rank based on r^2
+# -- multi: run multiple linear regression for all features and rank based on p-values
 # @output A plot showing
 # - Diagonal: The density of varibale for each class
 # - Lower Triangle: A contour density plot
 # - Upper Triangle: Correlation plot
-class_snapshot <- function(dataset, response) {
+class_snapshot <- function(dataset, response, rank_method = "independent") {
   
-  # Rank Each Feature Based On Their R^2 using logit
-  r2 <- sapply(setdiff(colnames(dataset),response), function(f) {
-    eqn <- as.formula(paste(response,"~",f))
-    model <- lrm(eqn, data = dataset)
-    return(model$stats[["R2"]])
-  }) %>% sort(decreasing = TRUE)
   
+  # ################################ 
+  # RANKING ALGORITHM ##############
+  
+  if (rank_method == "independent") {
+    
+    # Rank Each Feature Based On Their R^2 using logit
+    rank_name <- "R-Square"
+    rankings <- sapply(setdiff(colnames(dataset),response), function(f) {
+      eqn <- as.formula(paste(response,"~",f))
+      model <- lrm(eqn, data = dataset)
+      return(model$stats[["R2"]])
+    }) %>% sort(decreasing = TRUE) %>% round(3)
+    
+  } else if (rank_method == "multi") {
+    
+    # Rank Each Feature Based on Their R^2 using multilogit
+    rank_name <- "P-Values"
+    # Add Tags to discrete variables so that 
+    # we can detect p-values for these variables later on
+    discrete_vars <- sapply(dataset %>% select_(.dots=c(paste0("-",response))), is.factor)
+    rank_dataset <- dataset
+    colnames(rank_dataset)[discrete_vars] <- sprintf("--%s--",colnames(rank_dataset)[discrete_vars])
+    
+    # Perform logistic regression on the whole dataset
+    logit.fit <- glm(as.formula(paste0(response," ~ .")), family=binomial, data=rank_dataset)
+    
+    # Get the p_values for each feature
+    p_vals <- summary(logit.fit)$coefficients[,4]
+    feature_names <- colnames(dataset)
+    rankings <- sapply(feature_names[feature_names != response], function (fn) {
+      # For discrete, we first find all the p-values associated with
+      # the feature and get the min
+      if (discrete_vars[fn]) {
+        return(min(p_vals[grepl(sprintf("--%s--",fn),names(p_vals))]))
+      } else {
+        return(p_vals[[fn]])
+      }
+    }) %>%
+    sort() %>%
+    round(3)
+    
+  }
+  
+  # #################################### 
+  # DEFAULT PLOT SETTINGS ##############
   # Create Default Settings Across Plots
   r_levels <- levels(dataset[,response])
   # Colors
@@ -163,7 +205,7 @@ class_snapshot <- function(dataset, response) {
     
     # Output plot
     p_output +
-      geom_text(data = data.frame(x=Inf, y=Inf, label = scales::percent(r2[[feature]])),
+      geom_text(data = data.frame(x=Inf, y=Inf, label = scales::percent(rankings[[feature]])),
                 aes(x=x, y=y, label=label),
                 family=def_font, hjust=1.3, vjust=2.0) + 
       scale_y_continuous(expand=c(0,0)) +
@@ -262,7 +304,7 @@ class_snapshot <- function(dataset, response) {
   }
   
   # Output Plot
-  ggpairs(dataset, aes_string(colour=response),columns=names(r2),
+  ggpairs(dataset, aes_string(colour=response),columns=names(rankings),
           lower=list(continuous=GGally::wrap(lower_p),
                      combo=GGally::wrap(lower_p),
                      discrete=GGally::wrap(lower_p)),
@@ -280,7 +322,7 @@ class_snapshot <- function(dataset, response) {
           panel.spacing = unit(3,"pt"),
           panel.border = element_rect(color = fade_color(txt_color,0.3), fill = NA, size = 0.1),
           axis.title.x = element_text(margin=margin(15,0,0,0))) + 
-    xlab(bquote("LT = 2D Density View     D = Density (With "*R^2*")    UT = Correlation"))
+    xlab(paste0("LT = 2D Density View     D = Density (With ",rank_name,")    UT = Correlation"))
 }
 
 ## ---- end-of-plot-overview
