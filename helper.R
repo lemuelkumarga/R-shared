@@ -111,7 +111,7 @@ load_or_install.packages(c("ggplot2","dplyr","rms","GGally"))
 # - Diagonal: The density of varibale for each class
 # - Lower Triangle: A contour density plot
 # - Upper Triangle: Correlation plot
-class_snapshot <- function(dataset, response, rank_method = "independent") {
+class_snapshot <- function(dataset, response, rank_method = "multi") {
   
   
   # ################################ 
