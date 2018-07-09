@@ -133,7 +133,9 @@ class_snapshot <- function(dataset, response, rank_method = "multi") {
     rank_name <- "P-Values"
     # Add Tags to discrete variables so that 
     # we can detect p-values for these variables later on
-    discrete_vars <- sapply(dataset %>% select_(.dots=c(paste0("-",response))), is.factor)
+    discrete_vars <- sapply(dataset, is.factor)
+    # Exclude tagging of response
+    discrete_vars[response] <- FALSE
     rank_dataset <- dataset
     colnames(rank_dataset)[discrete_vars] <- sprintf("--%s--",colnames(rank_dataset)[discrete_vars])
     
@@ -321,7 +323,7 @@ class_snapshot <- function(dataset, response, rank_method = "multi") {
           strip.text = element_text(colour=ltxt_color, size=12),
           panel.spacing = unit(3,"pt"),
           panel.border = element_rect(color = fade_color(txt_color,0.3), fill = NA, size = 0.1),
-          axis.title.x = element_text(margin=margin(15,0,0,0))) + 
+          axis.title.x = element_text(margin=margin(t=15))) + 
     xlab(paste0("LT = 2D Density View     D = Density (With ",rank_name,")    UT = Correlation"))
 }
 
