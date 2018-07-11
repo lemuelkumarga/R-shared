@@ -99,7 +99,7 @@ data_overview <- function(data,
 # @prereq: assumes default.R has been loaded. If not, run the default.R source.
 
 # Load dependent packages
-load_or_install.packages(c("ggplot2","dplyr","rms","GGally"))
+load_or_install.packages(c("ggplot2","dplyr","rms","GGally","boot"))
 
 # Provides a relationship snapshot amongst features and the class
 # @input dataset: the dataset
@@ -116,49 +116,54 @@ class_snapshot <- function(dataset, response, rank_method = "multi") {
   
   # ################################ 
   # RANKING ALGORITHM ##############
-  
-  if (rank_method == "independent") {
-    
-    # Rank Each Feature Based On Their R^2 using logit
-    rank_name <- "R-Square"
-    rankings <- sapply(setdiff(colnames(dataset),response), function(f) {
-      eqn <- as.formula(paste(response,"~",f))
-      model <- lrm(eqn, data = dataset)
-      return(model$stats[["R2"]])
-    }) %>% sort(decreasing = TRUE) %>% round(3)
-    
-  } else if (rank_method == "multi") {
-    
-    # Rank Each Feature Based on Their R^2 using multilogit
-    rank_name <- "P-Values"
-    # Add Tags to discrete variables so that 
-    # we can detect p-values for these variables later on
-    discrete_vars <- sapply(dataset, is.factor)
-    # Exclude tagging of response
-    discrete_vars[response] <- FALSE
-    rank_dataset <- dataset
-    colnames(rank_dataset)[discrete_vars] <- sprintf("--%s--",colnames(rank_dataset)[discrete_vars])
-    
-    # Perform logistic regression on the whole dataset
-    logit.fit <- glm(as.formula(paste0(response," ~ .")), family=binomial, data=rank_dataset)
-    
-    # Get the p_values for each feature
-    p_vals <- summary(logit.fit)$coefficients[,4]
-    feature_names <- colnames(dataset)
-    rankings <- sapply(feature_names[feature_names != response], function (fn) {
-      # For discrete, we first find all the p-values associated with
-      # the feature and get the min
-      if (discrete_vars[fn]) {
-        return(min(p_vals[grepl(sprintf("--%s--",fn),names(p_vals))]))
-      } else {
-        return(p_vals[[fn]])
-      }
-    }) %>%
-    sort() %>%
-    round(3)
-    
+  # We will use bootstrap to find the mean and standard error of rank statistics
+  ranking.fn <- function(dataset, index) {
+    if (rank_method == "independent") {
+      
+      # Rank Each Feature Based On Their R^2 using logit
+      rank_name <- "R-Square"
+      rankings <- sapply(setdiff(colnames(dataset),response), function(f) {
+        eqn <- as.formula(paste(response,"~",f))
+        model <- lrm(eqn, data = dataset, subset=index)
+        return(model$stats[["R2"]])
+      })
+      
+    } else if (rank_method == "multi") {
+      
+      # Rank Each Feature Based on Their R^2 using multilogit
+      rank_name <- "P-Values"
+      # Add Tags to discrete variables so that 
+      # we can detect p-values for these variables later on
+      discrete_vars <- sapply(dataset, is.factor)
+      # Exclude tagging of response
+      discrete_vars[response] <- FALSE
+      rank_dataset <- dataset
+      colnames(rank_dataset)[discrete_vars] <- sprintf("--%s--",colnames(rank_dataset)[discrete_vars])
+      
+      # Perform logistic regression on the whole dataset
+      logit.fit <- glm(as.formula(paste0(response," ~ .")), family=binomial, data=rank_dataset, subset=index)
+      
+      # Get the p_values for each feature
+      p_vals <- summary(logit.fit)$coefficients[,4]
+      feature_names <- colnames(dataset)
+      rankings <- sapply(feature_names[feature_names != response], function (fn) {
+        # For discrete, we first find all the p-values associated with
+        # the feature and get the min
+        if (discrete_vars[fn]) {
+          return(min(p_vals[grepl(sprintf("--%s--",fn),names(p_vals))]))
+        } else {
+          return(p_vals[[fn]])
+        }
+      })
+    }
+    return(rankings)
   }
-  
+  ranking.bootstrap <- boot(dataset,ranking.fn, 100)
+  ranking.mean <- ranking.bootstrap$t0 %>% round(3)
+  ranking.sd <- data.frame(ranking.bootstrap$t) %>% summarise_all(funs(std_err = sd)) %>% round(3)
+  names(ranking.sd) <- names(ranking.bootstrap$t0)
+  ranking.decrease <- ifelse(rank_method == "multi", FALSE, TRUE)
+
   # #################################### 
   # DEFAULT PLOT SETTINGS ##############
   # Create Default Settings Across Plots
@@ -205,11 +210,16 @@ class_snapshot <- function(dataset, response, rank_method = "multi") {
         scale_x_continuous(expand=c(0,0))
     }
     
+    # Labels
+    lab <- sprintf("%s / %s",
+                   scales::percent(ranking.mean[[feature]]),
+                   scales::percent(ranking.sd[[feature]]))
+    
     # Output plot
     p_output +
-      geom_text(data = data.frame(x=Inf, y=Inf, label = scales::percent(rankings[[feature]])),
+      geom_text(data = data.frame(x=Inf, y=Inf, label = lab),
                 aes(x=x, y=y, label=label),
-                family=def_font, hjust=1.3, vjust=2.0) + 
+                family=def_font, hjust=1.3, vjust=2.0, size=3.5) + 
       scale_y_continuous(expand=c(0,0)) +
       scale_fill_manual(values=r_cols)
   }
@@ -306,7 +316,8 @@ class_snapshot <- function(dataset, response, rank_method = "multi") {
   }
   
   # Output Plot
-  ggpairs(dataset, aes_string(colour=response),columns=names(rankings),
+  ggpairs(dataset, aes_string(colour=response),
+          columns=names(ranking.mean %>% sort(decreasing = ranking.decrease)),
           lower=list(continuous=GGally::wrap(lower_p),
                      combo=GGally::wrap(lower_p),
                      discrete=GGally::wrap(lower_p)),
@@ -324,7 +335,7 @@ class_snapshot <- function(dataset, response, rank_method = "multi") {
           panel.spacing = unit(3,"pt"),
           panel.border = element_rect(color = fade_color(txt_color,0.3), fill = NA, size = 0.1),
           axis.title.x = element_text(margin=margin(t=15))) + 
-    xlab(paste0("LT = 2D Density View     D = Density (With ",rank_name,")    UT = Correlation"))
+    xlab(paste0("LT = 2D Density View     D = Density (With ",rank_name," Mean / SD)    UT = Correlation"))
 }
 
 ## ---- end-of-plot-overview
