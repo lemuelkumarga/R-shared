@@ -165,7 +165,7 @@ theme_lk <- function(fmt_plot = TRUE,
     plot.margin = unit(c(20,20,20,20),'pt'),
     
     # Title
-    plot.title = element_text(size = 15)
+    plot.title = element_text(size = 15, hjust=0.5)
   )
   
   legends <-  theme(
