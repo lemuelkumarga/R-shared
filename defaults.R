@@ -156,7 +156,7 @@ theme_lk <- function(fmt_plot = TRUE,
                      fmt_y = TRUE) {
   
   bg_n_plots <- theme(
-    text = element_text(family=def_font, colour=txt_color,10),
+    text = element_text(family=def_font, colour=txt_color,size=10),
     # Background Color
     plot.background = element_rect(fill=bg_color, colour=bg_color),
     
