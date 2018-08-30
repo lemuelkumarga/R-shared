@@ -2,8 +2,9 @@
 # Copyright Lemuel Kumarga
 
 # Load Specifications
-#Specify where the shared css files of website are located
-website_css_dir <- "../../shared/css/"
+#Specify where the shared css files are located
+website_css_file <- "../../shared/css/definitions.css"
+default_css_file <- "shared/css/defaults.css"
 
 # Load Packages or Install if Necessary ----
 ## ---- load_packages
@@ -25,7 +26,7 @@ load_or_install.packages <- function(list_of_packages) {
 # Load CSS Styles ----
 ## ---- load_css
 load_or_install.packages("dplyr")
-css_files = c(paste0(website_css_dir,"definitions.css"),"shared/css/defaults.css")
+css_files = c(website_css_file,default_css_file)
 
 load_css_variables <- function(css_files) {
   # Perform a cascading load, we find the first available file
