@@ -1,8 +1,9 @@
 # Default setup for R markdown
 # Copyright Lemuel Kumarga
 
-# Load Global Variables
-source("shared/variables.R");
+# Load Specifications
+#Specify where the shared css files of website are located
+website_css_dir <- "../../shared/css/"
 
 # Load Packages or Install if Necessary ----
 ## ---- load_packages
