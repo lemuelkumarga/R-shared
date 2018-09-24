@@ -166,7 +166,12 @@ theme_lk <- function(fmt_plot = TRUE,
     plot.margin = unit(c(20,20,20,20),'pt'),
     
     # Title
-    plot.title = element_text(size = 15, hjust=0.5)
+    plot.title = element_text(size = 15, hjust=0.5),
+    
+    # Strips
+    strip.background = element_rect(fill=fade_color(ltxt_color,0.5), 
+                                    color=fade_color(ltxt_color,0.5)),
+    strip.text = element_text(color=bg_color)
   )
   
   legends <-  theme(
