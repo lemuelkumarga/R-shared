@@ -109,8 +109,10 @@ load_or_install.packages("tidyr")
 # @input data the data frame
 # @input r_col the column name corresponding to the response variable
 # @output A list showing 2 plots
-#   - cont: ggplot output between response and continuous features
-#   - disc: ggplot output between response and discrete features
+#   - cont_plot: ggplot output between response and continuous features
+#   - disc_plot: ggplot output between response and discrete features
+#   - cont_data: continuous data
+#   - disc_data: discrete data
 data_snapshot <- function(data, r_col) {
   
   # Check if response is continuous (regression) or discrete (classification)
@@ -133,75 +135,84 @@ data_snapshot <- function(data, r_col) {
   disc_features <- disc_features %>% to_snapshot_input
   
   # Plot Response vs Continuous Features
-  if (is_r_cont) {
-    cont_plot <- ggplot(cont_features, aes_string(x="val",y=r_col)) +
-                 geom_smooth(method="loess", color=get_color(1), fill=fade_color(txt_color,0.5)) + 
-                 geom_point(alpha=0.02, color=txt_color) +
-                 scale_x_continuous(name="Variable Value")
-  } else {
-    cont_plot <- ggplot(cont_features, aes_string(x="val",fill=r_col)) +
-                 geom_density(alpha=0.5, color=NA) + 
-                 scale_x_continuous(name="Variable Value", expand=c(0,0)) + 
-                 scale_y_continuous(name="Density", expand=c(0,0)) + 
-                 scale_fill_manual(values=get_color())
+  cont_plot <- NA
+  if (length(cont_features) > 1) {
+    if (is_r_cont) {
+      cont_plot <- ggplot(cont_features, aes_string(x="val",y=r_col)) +
+                   geom_smooth(method="loess", color=get_color(1), fill=fade_color(txt_color,0.5)) + 
+                   geom_point(alpha=0.02, color=txt_color) +
+                   scale_x_continuous(name="Variable Value")
+    } else {
+      cont_plot <- ggplot(cont_features, aes_string(x="val",fill=r_col)) +
+                   geom_density(alpha=0.5, color=NA) + 
+                   scale_x_continuous(name="Variable Value", expand=c(0,0)) + 
+                   scale_y_continuous(name="Density", expand=c(0,0)) + 
+                   scale_fill_manual(values=get_color())
+    }
+    cont_plot <- cont_plot + 
+                 theme_lk() +
+                 facet_wrap(.~toupper(var), scales="free", strip.position="bottom")
   }
-  cont_plot <- cont_plot + 
-               theme_lk() +
-               facet_wrap(.~toupper(var), scales="free", strip.position="bottom")
   
   # Plot Response vs Discrete Features
-  if (is_r_cont) {
-    # Order disc_features by Median
-    disc_order <- disc_features %>%
-                  group_by(var, val) %>%
-                  summarise_(.dots=list("med"="median(" %|% r_col %|%")")) %>%
-                  arrange(desc(med)) %>%
-                  `[[`('val')
-    disc_features$val <- factor(disc_features$val, levels = disc_order)
-    disc_plot <- ggplot(disc_features, aes_string(x="val", y=r_col)) + 
-                 geom_violin(aes(alpha="NA"), scale="count", fill=fade_color(txt_color,0.25), color=NA) + 
-                 geom_boxplot(fill=NA, 
-                              color=get_color(1), 
-                              outlier.color=txt_color,
-                              outlier.alpha=0.02,
-                              width=0.1) +
-                 scale_x_discrete(name="Variable Levels") + 
-                 scale_alpha_manual(name="Violin Width", labels=c("NA"="Sample Size of Levels"), values=c("NA"=0.8)) 
-  } else {
-    # Find proportion across different levels
-    disc_prop <- disc_features %>%
-                 group_by_("var", "val", r_col) %>%
-                 summarise(count=n()) %>%
-                 ungroup() %>%
-                 group_by_("var","val") %>%
-                 mutate(val_count = sum(count)) %>%
-                 ungroup() %>%
-                 group_by_("var") %>%
-                 mutate(val_freq = val_count/sum(count)) %>%
-                 ungroup() %>%
-                  # Find Density Ratio
-                 group_by_("var",r_col) %>%
-                 mutate(count_freq = count / sum(count)) %>%
-                 ungroup() %>%
-                 group_by_("var","val") %>%
-                 mutate(freq_ratio = count_freq / sum(count_freq))
-                  
-    disc_plot <- ggplot(disc_prop,
-                        aes_string(x="val", y="freq_ratio", fill=r_col, width="val_freq * 1.5")) + 
-                  geom_bar(aes(alpha="NA"), stat="identity", position="stack") +
-                  scale_x_discrete(name="Variable Levels") + 
-                  scale_y_continuous(name="Density Proportion", expand=c(0,0), labels=scales::percent) + 
-                  scale_fill_manual(values=get_color()) +
-                  scale_alpha_manual(name="Bar Width", 
-                                     guide=guide_legend(order=1),
-                                     labels=c("NA"="Sample Size of Levels"), 
-                                     values=c("NA"=0.8))
+  disc_plot <- NA
+  if (length(disc_features) > 1) {
+    if (is_r_cont) {
+      # Order disc_features by Median
+      disc_order <- disc_features %>%
+                    group_by(var, val) %>%
+                    summarise_(.dots=list("med"="median(" %|% r_col %|%")")) %>%
+                    arrange(desc(med)) %>%
+                    `[[`('val')
+      disc_features$val <- factor(disc_features$val, levels = disc_order)
+      disc_plot <- ggplot(disc_features, aes_string(x="val", y=r_col)) + 
+                   geom_violin(aes(alpha="NA"), scale="count", fill=fade_color(txt_color,0.25), color=NA) + 
+                   geom_boxplot(fill=NA, 
+                                color=get_color(1), 
+                                outlier.color=txt_color,
+                                outlier.alpha=0.02,
+                                width=0.1) +
+                   scale_x_discrete(name="Variable Levels") + 
+                   scale_alpha_manual(name="Violin Width", labels=c("NA"="Sample Size of Levels"), values=c("NA"=0.8)) 
+    } else {
+      # Find proportion across different levels
+      disc_prop <- disc_features %>%
+                   group_by_("var", "val", r_col) %>%
+                   summarise(count=n()) %>%
+                   ungroup() %>%
+                   group_by_("var","val") %>%
+                   mutate(val_count = sum(count)) %>%
+                   ungroup() %>%
+                   group_by_("var") %>%
+                   mutate(val_freq = val_count/sum(count)) %>%
+                   ungroup() %>%
+                    # Find Density Ratio
+                   group_by_("var",r_col) %>%
+                   mutate(count_freq = count / sum(count)) %>%
+                   ungroup() %>%
+                   group_by_("var","val") %>%
+                   mutate(freq_ratio = count_freq / sum(count_freq))
+                    
+      disc_plot <- ggplot(disc_prop,
+                          aes_string(x="val", y="freq_ratio", fill=r_col, width="val_freq * 1.5")) + 
+                    geom_bar(aes(alpha="NA"), stat="identity", position="stack") +
+                    scale_x_discrete(name="Variable Levels") + 
+                    scale_y_continuous(name="Density Proportion", expand=c(0,0), labels=scales::percent) + 
+                    scale_fill_manual(values=get_color()) +
+                    scale_alpha_manual(name="Bar Width", 
+                                       guide=guide_legend(order=1),
+                                       labels=c("NA"="Sample Size of Levels"), 
+                                       values=c("NA"=0.8))
+    }
+    disc_plot <- disc_plot + 
+                  theme_lk() +
+                  facet_wrap(.~toupper(var), scales="free", strip.position="bottom")
   }
-  disc_plot <- disc_plot + 
-                theme_lk() +
-                facet_wrap(.~toupper(var), scales="free", strip.position="bottom")
  
-  return(list(cont=cont_plot,disc=disc_plot))
+  return(list(cont_plot = cont_plot,
+              disc_plot = disc_plot,
+              cont_data = cont_features,
+              disc_data = disc_features))
 }
 
 ## ---- end-of-data-snapshot
