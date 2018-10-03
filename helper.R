@@ -55,6 +55,21 @@ tictoc <- function(tic, toc, tic_on_toc = FALSE) {
 
 ## ---- end-of-str_concatenate
 
+## ---- cond_operator
+
+# Create a conditional operator similar to that in C++
+`%?%` <- function(cond,true_val) { 
+  function(false_val) { 
+    sapply(cond, function(c) { 
+      if (c) { true_val } else { false_val }
+    }) 
+  }
+}
+
+`%:%` <- function(eval_fn, false_val) { eval_fn(false_val) }
+
+## ---- end-of-cond_operator
+
 ## ---- data-overview
 
 # Provides high level information about a particular data frame
