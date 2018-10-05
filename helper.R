@@ -1,4 +1,6 @@
 
+# Prerequisites: Must have ran defaults.R previously
+
 ## ---- cache
 
 # After running the function, save the output into a cache file
@@ -6,7 +8,7 @@
 # @input inputs a list of inputs for the function
 # @input f the function to be run
 cache_dir <- "cache/"
-cache <- function(name, inputs, f) {
+cache(name, inputs, f) %:=% {
   cache_file <- paste0(cache_dir,name,".RDS")
   if (file.exists(cache_file)) { readRDS(cache_file) }
   else { output <- do.call(f,inputs); saveRDS(output, cache_file); output }
@@ -25,25 +27,24 @@ cache <- function(name, inputs, f) {
 #   storage: the value being stored when tic is run
 #   tic: the tic function to store existing value
 #   toc: the toc function to process existing value with current value
-tictoc <- function(tic, toc, tic_on_toc = FALSE) {
+tictoc(input_tic, input_toc, tic_on_toc = FALSE) %:=% {
   
-  tt_output <- list(storage=NA, tic=NA, toc=NA)
+  cur_env <- environment()
   
-  tt_output$tic <- function() {
-    tt_output$storage <<- tic()
+  tic <- function() {
+    assign("storage",input_tic(), envir=cur_env)
   }
   
-  tt_output$toc <- function() {
-    
-    old_val <- tt_output$storage
+  toc <- function() {
+    old_val <- storage
     new_val <- tic()
     
-    if (tic_on_toc) { tt_output$tic() }
+    if (tic_on_toc) { tic() }
     
-    toc(old_val, new_val)
+    input_toc(old_val, new_val)
   }
   
-  tt_output
+  cur_env
 }
 
 ## ---- end-of-tictoc
@@ -51,22 +52,21 @@ tictoc <- function(tic, toc, tic_on_toc = FALSE) {
 ## ---- str_concatenate
 
 # Create a binary function to concatenate strings
-`%|%` <- function(e1,e2) { paste0(e1,e2)}
+`.|.`(e1,e2) %:=% paste0(e1,e2)
 
 ## ---- end-of-str_concatenate
 
 ## ---- cond_operator
 
 # Create a conditional operator similar to that in C++
-`%?%` <- function(cond,true_val) { 
-  function(false_val) { 
-    sapply(cond, function(c) { 
+`.?.`(cond,true_val) %:=%  { 
+  ..(false_val) %:=% 
+    sapply(cond, ..(c) %:=% {
       if (c) { true_val } else { false_val }
-    }) 
-  }
+    })
 }
 
-`%:%` <- function(eval_fn, false_val) { eval_fn(false_val) }
+`.:.`(eval_fn, false_val) %:=% { eval_fn(false_val) }
 
 ## ---- end-of-cond_operator
 
@@ -83,8 +83,8 @@ tictoc <- function(tic, toc, tic_on_toc = FALSE) {
 # - Type of Variables in Each Column
 # - Some Non-Null Examples of Each Column
 # - % of Values that are Non-Null in Each Column (% Filled)
-data_overview <- function(data,
-                          null_fn = function(cname) { paste0(cname," == '' | is.na(",cname,")")}) {
+data_overview(data,
+              null_fn = ..(cname) %:=% { paste0(cname," == '' | is.na(",cname,")")}) %:=%  {
   
   cols_summary <- data.frame(ColumnNames = colnames(data))
   cols_summary$Type <- lapply(data, class) %>%
@@ -93,7 +93,7 @@ data_overview <- function(data,
                                   function(cname) {
                                     data %>%
                                       filter_(paste0("!(",null_fn(cname),")")) %>%
-                                      `[[`(cname) %>%
+                                      { .[[cname]] } %>%
                                       unique() -> filtered_set
                                     filtered_set[1:min(5, length(filtered_set))] %>%
                                       paste(collapse=' // ')
@@ -106,9 +106,8 @@ data_overview <- function(data,
                                      })
   cols_summary$PctFilled <- lapply(cols_summary$EmptyValues,
                                    function(x) {
-                                     ((nrow(data) - x) / nrow(data)) %>%
-                                       `*`(100) %>% floor() %>%
-                                       paste0("%")
+                                      { ((nrow(data) - x) / nrow(data)) * 100 } %>% 
+                                       floor %>% paste0("%")
                                    })
   
   select(cols_summary, ColumnNames, Type, Examples, PctFilled)
@@ -117,7 +116,6 @@ data_overview <- function(data,
 ## ---- end-of-data-overview
 
 ## ---- data-snapshot
-# Prerequisite: Must have ran defaults.R 
 load_or_install.packages("tidyr")
 
 # Provides graphical output on the relationship between features and response
@@ -128,7 +126,7 @@ load_or_install.packages("tidyr")
 #   - disc_plot: ggplot output between response and discrete features
 #   - cont_data: continuous data
 #   - disc_data: discrete data
-data_snapshot <- function(data, r_col) {
+data_snapshot(data, r_col) %:=% {
   
   # Check if response is continuous (regression) or discrete (classification)
   is_r_cont <- is.numeric(data[,r_col])

@@ -23,6 +23,60 @@ load_or_install.packages <- function(list_of_packages) {
 
 ## ---- end-of-load_packages
 
+# Create a Short Hand Syntax for Function Definition ----
+## ---- fn_definition
+load_or_install.packages(c("dplyr","rlang"))
+
+# @input def an expression of the form f(args)
+#        For binary operators trap with dots
+#        Example: for binary lhs %^% rhs, use `.^.`(lhs,rhs)
+#        For anonymous functions, use ..(args)
+# @input body the body of the expression
+# @output There are two cases:
+# [1] if ..(args) is specified, this factory returns an anonymous function
+# [2] if f(args) is specified, this factory creates a function with name f
+# on the parent environment
+`%:=%` <- function(def, body) { 
+  
+  def <- substitute(def) %>% 
+    expr_text
+  body <- substitute(body) %>% 
+    expr_text
+  
+  # Split Variables Into Function Name And Variable Name
+  spt_idx <- gregexpr("\\(", def)[[1]][1]
+  # Case 0: def does not follow the format f(args)
+  if (spt_idx < 2) {
+    stop("Definition %s is not of the form f(args)." %>%
+           sprintf(def))
+  } 
+  
+  fname <- substring(def,1,spt_idx - 1) %>%
+    # Convert binary functions into appropriate format
+  { gsub("(^`\\.)|(\\.`$)","%", .) }
+  params <- substring(def,spt_idx)
+  
+  # Create Function String
+  f_str <- "function %s { %s }" %>%
+    sprintf(params,body)
+  
+  output_f <- f_str %>% { parse(text=.) } %>% eval
+  # We want this function to behave similarly to function() {...}
+  # Hence, the environment of this output_f must be set to where
+  # the function is called
+  environment(output_f) <- parent.frame()
+  # Case 1: No function name is specified
+  # In that case we return an anonymous function
+  if (fname == "..") {
+    return(output_f)
+  } else {
+    assign(fname, output_f, env=parent.frame())
+  }
+}
+
+
+## ---- end-of-fn_definition
+
 # Load CSS Styles ----
 ## ---- load_css
 load_or_install.packages("dplyr")
