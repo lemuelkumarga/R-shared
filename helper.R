@@ -1,5 +1,6 @@
 
 # Prerequisites: Must have ran defaults.R previously
+load_or_install.packages("tidyr")
 
 ## ---- cache
 
@@ -31,11 +32,9 @@ tictoc(input_tic, input_toc, tic_on_toc = FALSE) %:=% {
   
   cur_env <- environment()
   
-  tic <- function() {
-    assign("storage",input_tic(), envir=cur_env)
-  }
+  tic() %:=% { assign("storage",input_tic(), envir=cur_env) }
   
-  toc <- function() {
+  toc() %:=% {
     old_val <- storage
     new_val <- tic()
     
@@ -48,27 +47,6 @@ tictoc(input_tic, input_toc, tic_on_toc = FALSE) %:=% {
 }
 
 ## ---- end-of-tictoc
-
-## ---- str_concatenate
-
-# Create a binary function to concatenate strings
-`.|.`(e1,e2) %:=% paste0(e1,e2)
-
-## ---- end-of-str_concatenate
-
-## ---- cond_operator
-
-# Create a conditional operator similar to that in C++
-`.?.`(cond,true_val) %:=%  { 
-  ..(false_val) %:=% 
-    sapply(cond, ..(c) %:=% {
-      if (c) { true_val } else { false_val }
-    })
-}
-
-`.:.`(eval_fn, false_val) %:=% { eval_fn(false_val) }
-
-## ---- end-of-cond_operator
 
 ## ---- data-overview
 
@@ -116,7 +94,6 @@ data_overview(data,
 ## ---- end-of-data-overview
 
 ## ---- data-snapshot
-load_or_install.packages("tidyr")
 
 # Provides graphical output on the relationship between features and response
 # @input data the data frame
@@ -128,6 +105,8 @@ load_or_install.packages("tidyr")
 #   - disc_data: discrete data
 data_snapshot(data, r_col) %:=% {
   
+  r_col <- expr_text(substitute(r_col))
+  
   # Check if response is continuous (regression) or discrete (classification)
   is_r_cont <- is.numeric(data[,r_col])
   if (!is_r_cont) { n_classes <- data[,r_col] %>% unique %>% length}
@@ -136,10 +115,10 @@ data_snapshot(data, r_col) %:=% {
   response <- data %>% select(r_col)
   features <- data %>% select_("-" %|% r_col)
   cont_features <- features %>% select_if(is.numeric)
-  disc_features <- features %>% select_if(function(x) { !is.numeric(x)})
+  disc_features <- features %>% select_if(~!is.numeric(.))
   
   # Reformat both features for ggplot input
-  to_snapshot_input <- function(feature_data) {
+  to_snapshot_input(feature_data) %:=% {
     feature_data %>% 
       cbind(response) %>%
       gather(key="var",value="val",colnames(.)[colnames(.) != r_col])
@@ -222,10 +201,8 @@ data_snapshot(data, r_col) %:=% {
                   facet_wrap(.~toupper(var), scales="free", strip.position="bottom")
   }
  
-  return(list(cont_plot = cont_plot,
-              disc_plot = disc_plot,
-              cont_data = cont_features,
-              disc_data = disc_features))
+  return(list("cont_plot" = cont_plot,
+              "disc_plot" = disc_plot))
 }
 
 ## ---- end-of-data-snapshot

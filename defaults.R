@@ -10,7 +10,8 @@ css_files = c("../../shared/css/definitions.css",
 ## ---- load_packages
 
 # Courtesy of https://stackoverflow.com/questions/4090169/elegant-way-to-check-for-missing-packages-and-install-them
-load_or_install.packages <- function(list_of_packages) {
+load_or_install.packages <- function(...) {
+  list_of_packages <- unlist(list(...))
   # Install packages if any
   new_packages <- list_of_packages[!(list_of_packages %in% installed.packages()[,"Package"])]
   if (length(new_packages)) {
@@ -23,9 +24,11 @@ load_or_install.packages <- function(list_of_packages) {
 
 ## ---- end-of-load_packages
 
-# Create a Short Hand Syntax for Function Definition ----
+# Load or install any necessary packages for this script
+load_or_install.packages("dplyr", "rlang","grDevices","ggplot2","pander")
+
+# Short Hand Syntaxes for Certain Use Cases ----
 ## ---- fn_definition
-load_or_install.packages(c("dplyr","rlang"))
 
 # @input def an expression of the form f(args)
 #        For binary operators trap with dots
@@ -38,29 +41,25 @@ load_or_install.packages(c("dplyr","rlang"))
 # on the parent environment
 `%:=%` <- function(def, body) { 
   
-  def <- substitute(def) %>% 
-    expr_text
-  body <- substitute(body) %>% 
-    expr_text
+  def <- expr_text(substitute(def))
+  body <- expr_text(substitute(body))
   
   # Split Variables Into Function Name And Variable Name
   spt_idx <- gregexpr("\\(", def)[[1]][1]
   # Case 0: def does not follow the format f(args)
   if (spt_idx < 2) {
-    stop("Definition %s is not of the form f(args)." %>%
-           sprintf(def))
+    stop(sprintf("Definition %s is not of the form f(args).",def))
   } 
   
-  fname <- substring(def,1,spt_idx - 1) %>%
-    # Convert binary functions into appropriate format
-  { gsub("(^`\\.)|(\\.`$)","%", .) }
+  # Convert binary functions into appropriate format
+  fname <- gsub("(^`\\.)|(\\.`$)","%",substring(def,1,spt_idx - 1))
   params <- substring(def,spt_idx)
   
   # Create Function String
-  f_str <- "function %s { %s }" %>%
-    sprintf(params,body)
+  f_str <- sprintf("function %s { %s }",params,body)
+    
   
-  output_f <- f_str %>% { parse(text=.) } %>% eval
+  output_f <- eval(parse(text=f_str))
   # We want this function to behave similarly to function() {...}
   # Hence, the environment of this output_f must be set to where
   # the function is called
@@ -73,15 +72,33 @@ load_or_install.packages(c("dplyr","rlang"))
     assign(fname, output_f, env=parent.frame())
   }
 }
-
-
 ## ---- end-of-fn_definition
+
+## ---- str_concatenate
+
+# Create a binary function to concatenate strings
+`.|.`(e1,e2) %:=% paste0(e1,e2)
+
+## ---- end-of-str_concatenate
+
+## ---- cond_operator
+
+# Create a conditional operator similar to that in C++
+`.?.`(cond,true_val) %:=%  { 
+  ..(false_val) %:=% 
+    sapply(cond, ..(c) %:=% {
+      if (c) { true_val } else { false_val }
+    })
+}
+
+`.:.`(eval_fn, false_val) %:=% { eval_fn(false_val) }
+
+## ---- end-of-cond_operator
 
 # Load CSS Styles ----
 ## ---- load_css
-load_or_install.packages("dplyr")
 
-load_css_variables <- function(css_files) {
+load_css_variables(css_files) %:=% {
   # Perform a cascading load, we find the first available file
   # that exists and load that css.
   css_to_load = ""
@@ -103,17 +120,17 @@ load_css_variables <- function(css_files) {
               { gsub('/\\*[^\\*]*\\*/','',.) } %>%
               # Find Root Blocks
               { regmatches(.,gregexpr(':root[ ]*\\{([^\\{\\}]*)\\}',.))} %>%
-              { sapply(.,function(s) { gsub(':root[ ]*\\{|\\}','',s) })} %>%
+              { sapply(., ..(s) %:=% { gsub(':root[ ]*\\{|\\}','',s) })} %>%
               # Get all Variables
               { strsplit(paste(.,collapse=' '),";") } %>%
               # Trim Each Variable String
               { c(sapply(.,trimws, which="both"))} %>%
               # Split Variable With Value
-              { sapply(.,function(s) { strsplit(s,"[ ]*:[ ']*|[' ]*,[' ]*")})}
+              { sapply(.,..(s) %:=% { strsplit(s,"[ ]*:[ ']*|[' ]*,[' ]*")})}
   
   # Create css variables
-  css_variables <- sapply(contents, function (x) { x[2:length(x)] })
-  names(css_variables) <- sapply(contents, function (x) { x[1]})
+  css_variables <- sapply(contents, ..(x) %:=% { x[2:length(x)] })
+  names(css_variables) <- sapply(contents, ..(x) %:=% { x[1] })
   
   return(css_variables)
 }
@@ -131,7 +148,6 @@ def_font <- css_variables[["--font-family"]][1]
 
 # Colors ----
 ## ---- init_colors
-load_or_install.packages(c("grDevices","ggplot2"))
 
 bg_color <- css_variables[["--pri"]]
 sec_color <- css_variables[["--sec"]]
@@ -150,21 +166,21 @@ hue_palette <- c("yellow",
                  "cyan",
                  "green")
 names(hue_palette) <- hue_palette
-hue_palette <- sapply(hue_palette, function(col) { css_variables[[paste0("--",col)]]})
+hue_palette <- sapply(hue_palette, ..(col) %:=% { css_variables[[paste0("--",col)]]})
 
-pollute_color <- function(original_col, pollute_col, ratio) {
+pollute_color(original_col, pollute_col, ratio) %:=% {
   c_palette <- colorRamp(c(original_col, pollute_col))
   return(rgb(c_palette(ratio),maxColorValue=255))
 }
 
-fade_color <- function(color, fadingFactor) {
+fade_color(color, fadingFactor) %:=% {
   return(pollute_color(bg_color, color, fadingFactor))
 }
 
-get_color <- function(inp = "", fadingFactor = 1.) { 
+get_color(inp = "", fadingFactor = 1.) %:=% { 
   
-  tmp_color_palette <- sapply(color_palette, function(x) {fade_color(x, fadingFactor)})
-  tmp_hue_palette <- sapply(hue_palette, function(x) {fade_color(x, fadingFactor)})
+  tmp_color_palette <- sapply(color_palette, ..(x) %:=% {fade_color(x, fadingFactor)})
+  tmp_hue_palette <- sapply(hue_palette, ..(x) %:=% {fade_color(x, fadingFactor)})
   
   if (inp == "") {
     # If nothing is specified, return the list of color palettes
@@ -187,11 +203,10 @@ get_color <- function(inp = "", fadingFactor = 1.) {
 
 # Pander Tables ----
 # ---- init_pander
-load_or_install.packages("pander")
 
 # Fix cell text alignment to left
 panderOptions('table.alignment.default',
-              function(df){ ifelse(sapply(df, is.numeric), 'center', 'left') })
+              ..(df) %:=% { ifelse(sapply(df, is.numeric), 'center', 'left') })
 
 # Fix when to split table
 panderOptions('table.split.table',Inf)
@@ -204,10 +219,10 @@ panderOptions('table.style','multiline')
 # GGPlot ----
 ## ---- init_ggplot
 
-theme_lk <- function(fmt_plot = TRUE,
-                     fmt_legend = TRUE,
-                     fmt_x = TRUE,
-                     fmt_y = TRUE) {
+theme_lk(fmt_plot = TRUE,
+         fmt_legend = TRUE,
+         fmt_x = TRUE,
+         fmt_y = TRUE) %:=% {
   
   bg_n_plots <- theme(
     text = element_text(family=def_font, colour=txt_color,size=10),
