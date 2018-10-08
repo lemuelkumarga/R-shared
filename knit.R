@@ -1,5 +1,5 @@
-# Load Global Variables
-source("shared/variables.R");
+
+website_css_dir <- "../../shared/css/"
 
 knitter <- function(inputFile, 
                     encoding, 
