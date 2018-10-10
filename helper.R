@@ -98,18 +98,32 @@ data_overview(data,
 # Provides graphical output on the relationship between features and response
 # @input data the data frame
 # @input r_col the column name corresponding to the response variable
+# @input cont_geom Custom geom input for continuous plots
+# @input disc_geom Custom geom input for discrete plots
+# @input misc_layers Custom layers for both continuous and discrete plots
 # @output A list showing 2 plots
 #   - cont_plot: ggplot output between response and continuous features
 #   - disc_plot: ggplot output between response and discrete features
-#   - cont_data: continuous data
-#   - disc_data: discrete data
-data_snapshot(data, r_col) %:=% {
+data_snapshot(data, r_col, cont_geom = NULL, disc_geom = NULL, misc_layers = geom_blank()) %:=% {
   
   r_col <- expr_text(substitute(r_col))
   
   # Check if response is continuous (regression) or discrete (classification)
   is_r_cont <- is.numeric(data[,r_col])
   if (!is_r_cont) { n_classes <- data[,r_col] %>% unique %>% length}
+  
+  # Set Geom Defaults
+  if (is_r_cont) {
+    # For Regression Problems
+    if (is.null(cont_geom)) { cont_geom <- geom_smooth(method="loess", color=`@c`(1), fill=`@c`(txt,0.5)) + 
+                                         geom_point(alpha=0.02, color=`@c`(txt)) }
+    if (is.null(disc_geom)) { disc_geom <- geom_violin(aes(alpha="NA"), scale="count", fill=`@c`(txt,0.25), color=NA) }
+  } else {
+    # For classification problems
+    if (is.null(cont_geom)) { cont_geom <- geom_density(alpha=0.5, color=NA) }
+    if (is.null(disc_geom)) { disc_geom <- geom_bar(aes(alpha="NA"), stat="identity", position="stack") }
+    
+  }
   
   # Split data into three components, response, cont_features, disc_features
   response <- data %>% select(r_col)
@@ -131,19 +145,19 @@ data_snapshot(data, r_col) %:=% {
   if (length(cont_features) > 1) {
     if (is_r_cont) {
       cont_plot <- ggplot(cont_features, aes_string(x="val",y=r_col)) +
-                   geom_smooth(method="loess", color=get_color(1), fill=fade_color(txt_color,0.5)) + 
-                   geom_point(alpha=0.02, color=txt_color) +
+                   cont_geom +
                    scale_x_continuous(name="Variable Value")
     } else {
       cont_plot <- ggplot(cont_features, aes_string(x="val",fill=r_col)) +
-                   geom_density(alpha=0.5, color=NA) + 
+                   cont_geom + 
                    scale_x_continuous(name="Variable Value", expand=c(0,0)) + 
                    scale_y_continuous(name="Density", expand=c(0,0)) + 
-                   scale_fill_manual(values=get_color())
+                   scale_fill_manual(values=`@c`())
     }
     cont_plot <- cont_plot + 
                  theme_lk() +
-                 facet_wrap(.~toupper(var), scales="free", strip.position="bottom")
+                 facet_wrap(.~toupper(var), scales="free", strip.position="bottom") +
+                 misc_layers
   }
   
   # Plot Response vs Discrete Features
@@ -158,10 +172,10 @@ data_snapshot(data, r_col) %:=% {
                     `[[`('val')
       disc_features$val <- factor(disc_features$val, levels = disc_order)
       disc_plot <- ggplot(disc_features, aes_string(x="val", y=r_col)) + 
-                   geom_violin(aes(alpha="NA"), scale="count", fill=fade_color(txt_color,0.25), color=NA) + 
+                   disc_geom + 
                    geom_boxplot(fill=NA, 
-                                color=get_color(1), 
-                                outlier.color=txt_color,
+                                color=`@c`(1), 
+                                outlier.color=`@c`(txt),
                                 outlier.alpha=0.02,
                                 width=0.1) +
                    scale_x_discrete(name="Variable Levels") + 
@@ -187,10 +201,10 @@ data_snapshot(data, r_col) %:=% {
                     
       disc_plot <- ggplot(disc_prop,
                           aes_string(x="val", y="freq_ratio", fill=r_col, width="val_freq * 1.5")) + 
-                    geom_bar(aes(alpha="NA"), stat="identity", position="stack") +
+                    disc_geom +
                     scale_x_discrete(name="Variable Levels") + 
                     scale_y_continuous(name="Density Proportion", expand=c(0,0), labels=scales::percent) + 
-                    scale_fill_manual(values=get_color()) +
+                    scale_fill_manual(values=`@c`()) +
                     scale_alpha_manual(name="Bar Width", 
                                        guide=guide_legend(order=1),
                                        labels=c("NA"="Sample Size of Levels"), 
@@ -198,7 +212,8 @@ data_snapshot(data, r_col) %:=% {
     }
     disc_plot <- disc_plot + 
                   theme_lk() +
-                  facet_wrap(.~toupper(var), scales="free", strip.position="bottom")
+                  facet_wrap(.~toupper(var), scales="free", strip.position="bottom") +
+                  misc_layers
   }
  
   return(list("cont_plot" = cont_plot,
