@@ -1,11 +1,6 @@
 # Default setup for R markdown
 # Copyright Lemuel Kumarga
 
-# Load Specifications
-#Specify which css files are to be used, in descending priority
-css_files = c("../../shared/css/definitions.css",
-              "shared/css/defaults.css")
-
 # Load Packages or Install if Necessary ----
 ## ---- load_packages
 
@@ -96,9 +91,17 @@ load_or_install.packages("dplyr", "rlang","grDevices","ggplot2","pander")
 ## ---- end-of-cond_operator
 
 # Load CSS Styles ----
-## ---- load_css
-
-load_css_variables(css_files) %:=% {
+# Encapsulate to hide unnecessary functions
+{..() %:=% {
+  
+  ## ---- load_css
+  
+  # Load Specifications
+  #Specify which css files are to be used, in descending priority
+  css_files = c("../../shared/css/definitions.css",
+                "shared/css/defaults.css")
+  
+  
   # Perform a cascading load, we find the first available file
   # that exists and load that css.
   css_to_load = ""
@@ -131,75 +134,74 @@ load_css_variables(css_files) %:=% {
   # Create css variables
   css_variables <- sapply(contents, ..(x) %:=% { x[2:length(x)] })
   names(css_variables) <- sapply(contents, ..(x) %:=% { x[1] })
+
+  ## ---- end-of-load_css
+
+  # Font Styles ----
+  ## ---- init_font_styles
   
-  return(css_variables)
-}
-
-css_variables <- load_css_variables(css_files)
-
-## ---- end-of-load_css
-
-# Font Styles ----
-## ---- init_font_styles
-
-def_font <- css_variables[["--font-family"]][1]
-
-## ---- end-of-init_font_styles
-
-# Colors ----
-## ---- init_colors
-
-bg_color <- css_variables[["--pri"]]
-sec_color <- css_variables[["--sec"]]
-heading_color <- css_variables[["--heading-color"]]
-txt_color <- css_variables[["--font-color"]]
-ltxt_color <- alpha(txt_color,0.75)
-
-color_palette <- unlist(css_variables[grepl("--color-", names(css_variables))]) %>%
-                 { .[sort.list(names(.))] }
-
-hue_palette <- c("yellow",
-                 "orange",
-                 "red",
-                 "purple",
-                 "blue",
-                 "cyan",
-                 "green")
-names(hue_palette) <- hue_palette
-hue_palette <- sapply(hue_palette, ..(col) %:=% { css_variables[[paste0("--",col)]]})
-
-pollute_color(original_col, pollute_col, ratio) %:=% {
-  c_palette <- colorRamp(c(original_col, pollute_col))
-  return(rgb(c_palette(ratio),maxColorValue=255))
-}
-
-fade_color(color, fadingFactor) %:=% {
-  return(pollute_color(bg_color, color, fadingFactor))
-}
-
-get_color(inp = "", fadingFactor = 1.) %:=% { 
+  assign("@f",css_variables[["--font-family"]][1], envir = parent.frame())
   
-  tmp_color_palette <- sapply(color_palette, ..(x) %:=% {fade_color(x, fadingFactor)})
-  tmp_hue_palette <- sapply(hue_palette, ..(x) %:=% {fade_color(x, fadingFactor)})
+  ## ---- end-of-init_font_styles
   
-  if (inp == "") {
-    # If nothing is specified, return the list of color palettes
-    return (as.character(tmp_color_palette))
-  } else if (is.numeric(inp)) {
-    # If index is specified, return the index of the color palette
-    return(tmp_color_palette[[((inp - 1 + length(tmp_color_palette)) %% length(tmp_color_palette)) + 1]])
-  } else if (inp %in% names(tmp_hue_palette)) {
-    # If palette is requested, return the palette
-    return(tmp_hue_palette[[inp]])
-  } else if (inp == "palette") {
-    # If palette is requested, return the palette
-    return(colorRampPalette(as.character(tmp_hue_palette)))
-  } else {
-    return(bg_color)
+  # Colors ----
+  ## ---- init_colors
+  
+  pollute_color(original_col, pollute_col, ratio) %:=% {
+    c_palette <- colorRamp(c(original_col, pollute_col))
+    return(rgb(c_palette(ratio),maxColorValue=255))
   }
-}
 
-## ---- end-of-init_colors
+  base_palette <- c( "bg" = css_variables[["--pri"]],
+                     "sec" = css_variables[["--sec"]],
+                     "heading" = css_variables[["--heading-color"]],
+                     "txt" = css_variables[["--font-color"]],
+                     "ltxt" = pollute_color(css_variables[["--pri"]],css_variables[["--font-color"]],0.75))
+  
+  color_palette <- unlist(css_variables[grepl("--color-", names(css_variables))]) %>%
+                   { .[sort.list(names(.))] }
+  
+  hue_palette <- c("yellow","orange","red","purple","blue","cyan","green")
+  names(hue_palette) <- hue_palette
+  hue_palette <- sapply(hue_palette, ..(col) %:=% { css_variables[[paste0("--",col)]]})
+  
+  fade_color(color, fadingFactor) %:=% {
+    return(pollute_color(base_palette[["bg"]], color, fadingFactor))
+  }
+  
+  get_color(id = "NA", fadingFactor = 1.) %:=% { 
+    
+    inp <- id
+    
+    tmp_base_palette <- sapply(base_palette, ..(x) %:=% { fade_color(x, fadingFactor) })
+    tmp_color_palette <- sapply(color_palette, ..(x) %:=% { fade_color(x, fadingFactor) })
+    tmp_hue_palette <- sapply(hue_palette, ..(x) %:=% { fade_color(x, fadingFactor) })
+    
+    if (inp == "NA") {
+      # If nothing is specified, return the list of color palettes
+      return (as.character(tmp_color_palette))
+    } else if (inp == "palette") {
+      # If palette is requested, return the palette
+      return(colorRampPalette(as.character(tmp_hue_palette)))
+    } else if (grepl("^[0-9]+$",inp)) {
+      # If index is specified, return the index of the color palette
+      return(tmp_color_palette[[((as.numeric(inp) - 1 + length(tmp_color_palette)) %% length(tmp_color_palette)) + 1]])
+    } else if (inp %in% names(tmp_hue_palette)) {
+      # If palette is requested, return the palette
+      return(tmp_hue_palette[[inp]])
+    } else if (inp %in% names(tmp_base_palette)) {
+      # If base colors is requested
+      return(tmp_base_palette[[inp]])
+    } else {
+      stop("Invalid input for function @c is specified.")
+    }
+  }
+  
+  assign("@c_",get_color, envir = parent.frame())
+  assign("@c", ..(id = NA, fadingFactor = 1.) %:=% get_color(expr_text(substitute(id)), fadingFactor), envir = parent.frame())
+  
+  ## ---- end-of-init_colors
+}}()
 
 # Pander Tables ----
 # ---- init_pander
@@ -225,12 +227,12 @@ theme_lk(fmt_plot = TRUE,
          fmt_y = TRUE) %:=% {
   
   bg_n_plots <- theme(
-    text = element_text(family=def_font, colour=txt_color,size=10),
+    text = element_text(family=`@f`, colour=`@c`(txt),size=10),
     # Background Color
-    plot.background = element_rect(fill=bg_color, colour=bg_color),
+    plot.background = element_rect(fill=`@c`(bg), colour=`@c`(bg)),
     
     # Plot
-    panel.background = element_rect(fill=alpha("#FFFFFF",0.0),colour=NA),
+    panel.background = element_rect(fill=alpha(`@c`(bg),0.0),colour=NA),
     panel.border = element_rect(colour=NA, fill=NA),
     plot.margin = unit(c(20,20,20,20),'pt'),
     
@@ -238,16 +240,16 @@ theme_lk(fmt_plot = TRUE,
     plot.title = element_text(size = 15, hjust=0.5),
     
     # Strips
-    strip.background = element_rect(fill=fade_color(ltxt_color,0.5), 
-                                    color=fade_color(ltxt_color,0.5)),
-    strip.text = element_text(color=bg_color)
+    strip.background = element_rect(fill=`@c`(ltxt,0.5), 
+                                    color=`@c`(ltxt,0.5)),
+    strip.text = element_text(color=`@c`(bg))
   )
   
   legends <-  theme(
     legend.position = "bottom",
     legend.background = element_rect(fill=NA),
     legend.title = element_text(size = 10),
-    legend.key = element_rect(fill=bg_color, colour=NA),
+    legend.key = element_rect(fill=`@c`(bg), colour=NA),
     legend.text = element_text(size = 10),
     legend.direction ="horizontal",
     legend.box = "horizontal",
@@ -255,19 +257,19 @@ theme_lk(fmt_plot = TRUE,
   )
   
   x_axis <- theme(
-    axis.line.x = element_line(colour=ltxt_color),
-    axis.ticks.x = element_line(colour=ltxt_color),
-    axis.title.x = element_text(colour=ltxt_color, size = 12),
-    axis.text.x = element_text(colour=ltxt_color, size = 10),
+    axis.line.x = element_line(colour=`@c`(ltxt)),
+    axis.ticks.x = element_line(colour=`@c`(ltxt)),
+    axis.title.x = element_text(colour=`@c`(ltxt), size = 12),
+    axis.text.x = element_text(colour=`@c`(ltxt), size = 10),
     panel.grid.major.x = element_line(colour=NA),
     panel.grid.minor.x = element_line(colour=NA)
   )
   
   y_axis <- theme(
-    axis.line.y = element_line(colour=ltxt_color),
-    axis.ticks.y = element_line(colour=ltxt_color),
-    axis.title.y = element_text(colour=ltxt_color, size = 12),
-    axis.text.y = element_text(colour=ltxt_color, size = 10),
+    axis.line.y = element_line(colour=`@c`(ltxt)),
+    axis.ticks.y = element_line(colour=`@c`(ltxt)),
+    axis.title.y = element_text(colour=`@c`(ltxt), size = 12),
+    axis.text.y = element_text(colour=`@c`(ltxt), size = 10),
     panel.grid.major.y = element_line(colour=NA),
     panel.grid.minor.y = element_line(colour=NA)
   )
