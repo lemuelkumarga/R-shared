@@ -37,12 +37,18 @@ $(document).ready(function(){
   	PPT POPOVERS
   ===================================== */
   $('[data-toggle="popover"]').popover({ trigger : "hover focus" ,
+                                          container: 'body',
                                           placement : function (context, source) {
-                                                          var win_y = $(document).scrollTop() + $(window).height();
-                                                          var win_x = $(window).width();
-                                                          var position = $(source).position();
-                                                          if (position.top >= win_y - $(window).height() / 2) {
-                                                              return "top"
+                                                          var slide = $('slide')
+                                                          var s_x = slide.offset().top
+                                                          var s_y = slide.offset().left
+                                                          var s_w = slide.width()
+                                                          var s_h = slide.height()
+                                                          var l_x = $(source).offset().left;
+                                                          var l_y = $(source).offset().top;
+
+                                                          if ((l_y - s_y) / s_h < 0.5) {
+                                                            return "top"
                                                           } else {
                                                               return "bottom"
                                                           }
@@ -64,12 +70,6 @@ $(document).ready(function(){
     setTimeout(function() {
       $(".main-container").bind("click", closePopovers); 
     }, 0);
-  });
-
-  // Bootstrap popovers require two clicks after hide
-  // https://github.com/twbs/bootstrap/issues/16732
-  $('body').on('hidden.bs.popover', function (e) {
-    $(e.target).data("bs.popover").inState.click = false;
   });
 
 });
