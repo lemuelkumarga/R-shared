@@ -39,18 +39,18 @@ $(document).ready(function(){
   $('[data-toggle="popover"]').popover({ trigger : "hover focus" ,
                                           container: 'body',
                                           placement : function (context, source) {
-                                                          var slide = $('slide')
-                                                          var s_x = slide.offset().top
-                                                          var s_y = slide.offset().left
+                                                          var slide = $('slide.current')
+                                                          var s_x = slide.offset().left
+                                                          var s_y = slide.offset().top
                                                           var s_w = slide.width()
                                                           var s_h = slide.height()
                                                           var l_x = $(source).offset().left;
                                                           var l_y = $(source).offset().top;
 
                                                           if ((l_y - s_y) / s_h < 0.5) {
-                                                            return "top"
+                                                            return "bottom"
                                                           } else {
-                                                              return "bottom"
+                                                              return "top"
                                                           }
                                                       } 
   }); 
