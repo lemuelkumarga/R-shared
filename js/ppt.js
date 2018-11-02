@@ -66,10 +66,4 @@ $(document).ready(function(){
     }, 0);
   });
 
-  // Bootstrap popovers require two clicks after hide
-  // https://github.com/twbs/bootstrap/issues/16732
-  $('body').on('hidden.bs.popover', function (e) {
-    $(e.target).data("bs.popover").inState.click = false;
-  });
-
 });
