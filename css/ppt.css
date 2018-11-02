@@ -9,6 +9,7 @@ h1 { font-size: 3em; }
 h2 { font-size: 2.0em; }
 h3 { font-size: 1.8em; }
 p, ul, ol { line-height: 1.2em; }
+.ul { text-decoration: underline; }
 
 slides > slide {
 	font-size: 100%;
@@ -150,16 +151,13 @@ slide.dark .note ol {
 =========================================
 */
 .quotes {
-	margin-top: 25px;
-	width: 80%;
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -48%);
-}
-
-.quotes .hl {
-	text-decoration: underline;
+	display: flex;
+	width: 90%;
+	height: 90%;
+	padding-top: 25px;
+	align-items: center;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 .quotes .cite {
