@@ -1,21 +1,53 @@
 $(document).ready(function(){
 
-  $('[data-toggle="popover"]').popover({ trigger : "hover focus", 
-                                         placement : function (context, source) {
+
+  /* ===================================
+  	AUTO ZOOM BASED ON WIDTH
+  ===================================== */
+  function ppt_resize() {
+
+  	var width = $('slides > slide').css('width').replace('px','')
+  	var height = $('slides > slide').css('height').replace('px','')
+  	var asp_ratio = height / width
+
+  	var wwidth = $(window).innerWidth()
+  	var wheight = $(window).innerHeight()
+  	var wasp_ratio = wheight / wwidth
+
+  	// Fix the Width
+  	if (asp_ratio < wasp_ratio) {
+  		wheight = wwidth * asp_ratio
+
+  	} else {
+  		wwidth = wheight * 1. / asp_ratio
+  	}
+
+  	$('body').css('zoom', 0.95 * wwidth / width)
+  }
+
+  // Resize PPT based on window change
+  $(window).on('resize orientationchange', function() {
+  	ppt_resize()
+  })
+
+  ppt_resize()
+
+
+  /* ===================================
+  	PPT POPOVERS
+  ===================================== */
+  $('[data-toggle="popover"]').popover({ trigger : "hover focus" ,
+                                          placement : function (context, source) {
                                                           var win_y = $(document).scrollTop() + $(window).height();
                                                           var win_x = $(window).width();
                                                           var position = $(source).position();
-                                                          if (win_x - position.left > 700) {
-                                                              return "right"
-                                                          } else if (position.left > 700) {
-                                                              return "left"
-                                                          } else if (win_y - position.top < 700) {
+                                                          if (win_y - position.top < 800) {
                                                               return "top"
                                                           } else {
                                                               return "bottom"
                                                           }
                                                       } 
-                                      }); 
+  }); 
 
   /* Allow for popovers to be dismissed in mobile 
   Courtesy of gregblass.
