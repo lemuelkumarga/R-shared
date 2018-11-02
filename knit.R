@@ -73,7 +73,7 @@ knitPPT <- function(inputFile, encoding,
                           website_css_dir %|% "general.css",'shared/css/ppt.css')) { 
   
   # Then collects all the additional JS plugins
-  js = rmarkdown::includes(in_header= c("shared/js/ppt.html","shared/js/js.html"))
+  js = rmarkdown::includes(in_header= "shared/js/ppt.html")
   
   html_output <- rmarkdown::ioslides_presentation(
                     css=css,
