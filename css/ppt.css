@@ -111,6 +111,33 @@ slide.dark ol {
 slides > slide.dark:after {
 	color: var(--pri-50);
 }
+
+
+/*
+=========================================
+    Notes
+=========================================
+*/
+
+.note section {
+	background-color: var(--pri);
+	color: var(--text-color);
+	font-size: 18px;
+}
+
+slide.dark .note h1,
+slide.dark .note h2,
+slide.dark .note h3,
+slide.dark .note h4,
+slide.dark .note h5,
+slide.dark .note h6,
+slide.dark .note p,
+slide.dark .note ul,
+slide.dark .note ol {
+	color: var(--text-color);
+}
+
+
 /*
 =========================================
     Custom Deck - QUOTES
