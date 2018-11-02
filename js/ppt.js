@@ -41,7 +41,7 @@ $(document).ready(function(){
                                                           var win_y = $(document).scrollTop() + $(window).height();
                                                           var win_x = $(window).width();
                                                           var position = $(source).position();
-                                                          if (win_y - position.top < 800) {
+                                                          if (win_y - position.top >= $(window).height() / 2) {
                                                               return "top"
                                                           } else {
                                                               return "bottom"
