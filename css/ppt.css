@@ -24,7 +24,6 @@ a:hover {
 }
 
 .popover {
-	background-color: var(--pri-75);
 	max-width: 500px;
 	font-size: 0.8em;
 }
@@ -34,9 +33,6 @@ a:hover {
 	font-size: 1.0em;
 }
 
-.popover .arrow {
-	opacity: 0.75;
-}
 
 /*
 =========================================
