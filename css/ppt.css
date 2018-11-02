@@ -16,6 +16,27 @@ slides > slide:not(.nobackground):after {
 	font-family: var(--font-family);
 }
 
+/* POPOVERS ====================== */
+
+a:hover {
+  color: inherit !important;
+}
+
+.popover {
+	background-color: var(--pri-75);
+	max-width: 500px;
+	font-size: 0.8em;
+}
+
+.popover-title, 
+.popover-header {
+	font-size: 1.0em;
+}
+
+.popover .arrow {
+	opacity: 0.75;
+}
+
 /*
 =========================================
     Title Page Editing
