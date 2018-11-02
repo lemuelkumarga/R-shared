@@ -26,6 +26,8 @@ a:hover {
 .popover {
 	max-width: 500px;
 	font-size: 0.8em;
+	border-width: 5px;
+	border-radius: 10px;
 }
 
 .popover-title, 
@@ -33,6 +35,9 @@ a:hover {
 	font-size: 1.0em;
 }
 
+.popover .arrow {
+	visibility: hidden;
+}
 
 /*
 =========================================
