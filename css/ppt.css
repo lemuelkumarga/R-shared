@@ -89,6 +89,9 @@ slides > slide.dark {
     Normal Slides Editing
 =========================================
 */
+hgroup h2, hgroup h3 {
+	margin-bottom: 0.2em;
+}
 
 hgroup h3 {
 	font-size: 1.5em;
