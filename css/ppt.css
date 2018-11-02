@@ -1,0 +1,116 @@
+/*
+=========================================
+    RMD to PPT Conversion
+=========================================
+*/
+body { font-size: 30px !important; }
+h1 { font-size: 3em; }
+h2 { font-size: 2.0em; }
+h3 { font-size: 1.8em; }
+
+slides > slide {
+	font-size: 100%;
+}
+
+slides > slide:not(.nobackground):after {
+	font-family: var(--font-family);
+}
+
+/*
+=========================================
+    Title Page Editing
+=========================================
+*/
+.segue {
+	padding: 40px 60px;
+}
+
+.title-slide hgroup h1 {
+	font-size: 3em;
+	line-height: 1.2;
+	color: var(--heading-color);
+}
+
+.title-slide hgroup h2 {
+    font-size: 2em;
+    color: var(--heading-color-75);
+    font-weight: 300;
+}
+
+.title-slide hgroup p {
+	font-size: 1em;
+	color: var(--font-color);
+}
+/*
+=========================================
+    Sections Editing
+=========================================
+*/
+slides > slide.dark {
+	background-color: var(--sec) !important;
+}
+
+.segue h2 {
+	font-size: 2.0em;
+	line-height: 1.2;
+}
+
+.segue h3 {
+	line-height: 1.2;
+}
+
+/*
+=========================================
+    Normal Slides Editing
+=========================================
+*/
+
+hgroup h3 {
+	font-size: 1.5em;
+	color: var(--heading-color-50);
+	padding-left: 10px;
+}
+
+/*
+=========================================
+    Invert Slides Editing
+=========================================
+*/
+slide.dark hgroup h2, 
+slide.dark hgroup h3, 
+slide.dark p,
+slide.dark ul,
+slide.dark ol {
+	color: var(--pri);
+}
+
+slides > slide.dark:after {
+	color: var(--pri-50);
+}
+/*
+=========================================
+    Custom Deck - QUOTES
+=========================================
+*/
+.quotes {
+	margin-top: 25px;
+	width: 80%;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -48%);
+}
+
+.quotes .hl {
+	text-decoration: underline;
+}
+
+.quotes .cite {
+	text-align: right;
+}
+
+.quotes .cite .sub {
+	font-size: 0.8em;
+	opacity: 0.5;
+}
+

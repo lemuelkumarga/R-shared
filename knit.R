@@ -1,17 +1,12 @@
 
 website_css_dir <- "../../shared/css/"
+`%|%` <- function(s1, s2) { paste0(s1,s2) }
 
-knitter <- function(inputFile, 
+knitRMD <- function(inputFile, 
                     encoding, 
-                    prepend_mds = c("shared/md/website.md","shared/md/requirements.md","shared/md/cloning.md")) {
-  
-  # First collect all the csss that are available
-  css = c('shared/css/defaults.css');
-  css = c(css, css,paste0(website_css_dir,'definitions.css'))
-  css = c(css, css,paste0(website_css_dir,'general.css'))
-  #if (file.exists(paste0(website_css_dir,'definitions.css'))) { css = c(css, css,paste0(website_css_dir,'definitions.css')); } 
-  #if (file.exists(paste0(website_css_dir,'general.css'))) { css = c(css, css,paste0(website_css_dir,'general.css')); } 
-  css = c(css, 'shared/css/Rmd.css'); 
+                    prepend_mds = c("shared/md/website.md","shared/md/requirements.md","shared/md/cloning.md"),
+                    css = c('shared/css/defaults.css', website_css_dir %|% 'definitions.css',
+                            website_css_dir %|% "general.css",'shared/css/Rmd.css')) {
   
   # Then collects all the additional JS plugins
   js = rmarkdown::includes(in_header= "shared/js/js.html")
@@ -30,7 +25,7 @@ knitter <- function(inputFile,
                     output_file = html_file); 
   
   # Create a responsive table container for all tables
-  system(paste0("sed 's/<table/<div class=",'"',"table-responsive",'"',"><table/g' index.html | sed 's/<\\/table>/<\\/table><\\/div>/g' > tmp.html"))
+  system("sed 's/<table/<div class=" %|% '"' %|% "table-responsive" %|% '"' %|% "><table/g' index.html | sed 's/<\\/table>/<\\/table><\\/div>/g' > tmp.html")
   system('mv tmp.html index.html')
   
   # md output
@@ -52,7 +47,7 @@ knitter <- function(inputFile,
     # Prepend specified markdowns 
     for (md_file in rev(prepend_mds)) {
       if (file.exists(md_file)) {
-        system(paste0('cat ',md_file,' | cat - README.md > tmp.md'))
+        system('cat ' %|% md_file %|% ' | cat - README.md > tmp.md')
         system('mv tmp.md README.md')
       }
     }
@@ -66,10 +61,27 @@ knitter <- function(inputFile,
     project_name <- basename(project_name)
     
     # Replace projects with actual name of the project
-    system(paste0("sed 's/<project>/",project_name,"/g' README.md > tmp.md"))
+    system("sed 's/<project>/" %|% project_name %|% "/g' README.md > tmp.md")
     system('mv tmp.md README.md')
   }
   
   system('rm -rf README_files');
 }
- 
+
+knitPPT <- function(inputFile, encoding,
+                    css=c('shared/css/defaults.css', website_css_dir %|% 'definitions.css',
+                          website_css_dir %|% "general.css",'shared/css/ppt.css')) { 
+  
+  html_output <- rmarkdown::ioslides_presentation(
+                    css=css,
+                    self_contained=FALSE
+                  )
+  html_file <- file.path(dirname(inputFile), 'index.html')
+  rmarkdown::render(inputFile, 
+                    output_format=html_output,
+                    encoding = encoding, 
+                    output_file=html_file)
+  
+  system("sed '/slide-dark/s/<slide class=\"\">/<slide class=\"dark\">/g' index.html > tmp.html")
+  system("mv tmp.html index.html")
+}
