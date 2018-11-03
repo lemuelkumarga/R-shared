@@ -4,6 +4,7 @@
 =========================================
 */
 /* Set Default font size and enable auto adjust on css zoom */
+div, article { font-family: var(--font-family); }
 body { font-size: 30px !important; -webkit-text-size-adjust: auto;}
 h1 { font-size: 3em; }
 h2 { font-size: 2.0em; }
