@@ -4,7 +4,7 @@
 =========================================
 */
 /* Set Default font size and enable auto adjust on css zoom */
-div, article { font-family: var(--font-family); }
+slides > slide, div, article { font-family: var(--font-family); }
 body { font-size: 30px !important; -webkit-text-size-adjust: auto;}
 h1 { font-size: 3em; }
 h2 { font-size: 2.0em; }
@@ -40,6 +40,23 @@ a:hover {
 
 .popover .arrow {
 	visibility: hidden;
+}
+
+/*
+=========================================
+    General
+=========================================
+*/
+
+/* References to be placed at bottom left */
+slide .ref {
+	position: absolute;
+	bottom: 20px;
+	right: 15%;
+	line-height: 1.9;
+	font-size: 12pt;
+	opacity: 0.8;
+	text-align: right;
 }
 
 /*
@@ -132,7 +149,7 @@ slides > slide.dark:after {
 
 .note section {
 	background-color: var(--pri);
-	color: var(--text-color);
+	color: var(--font-color);
 	font-size: 18px;
 }
 
@@ -145,7 +162,7 @@ slide.dark .note h6,
 slide.dark .note p,
 slide.dark .note ul,
 slide.dark .note ol {
-	color: var(--text-color);
+	color: var(--font-color);
 }
 
 
