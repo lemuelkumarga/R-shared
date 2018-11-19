@@ -87,6 +87,6 @@ knitPPT <- function(inputFile, encoding,
                     output_file=html_file)
   
   # Allow Dark Slides and Scaling in mobile
-  system("sed '/slide-dark/s/<slide class=\"\">/<slide class=\"dark\">/g' index.html | sed '/<meta name=\"viewport\"/s/\">/,user-scalable=no\">/g' > tmp.html")
+  system("sed '/slide-invert/s/<slide class=\"/<slide class=\"invert /g' index.html | sed '/<slide/s/dark/invert/g' | sed '/slide-null/s/<slide class=\"/<slide class=\"null /g' | sed '/<meta name=\"viewport\"/s/\">/,user-scalable=no\">/g' > tmp.html")
   system("mv tmp.html index.html")
 }

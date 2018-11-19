@@ -52,7 +52,7 @@ a:hover {
 body {
 	background-color: #525252;
 	/* Courtesy of Hybridixstudio @ transparenttextures */
-	background-image: url("textures/black-orchid.png");
+    background-image: url(textures/black-orchid.png);
 }
 
 /*
@@ -102,10 +102,6 @@ slide .ref {
     Sections Editing
 =========================================
 */
-slides > slide.dark {
-	background-color: var(--sec) !important;
-}
-
 .segue h2 {
 	font-size: 2.0em;
 	line-height: 1.2;
@@ -135,24 +131,54 @@ hgroup h3 {
     Invert Slides Editing
 =========================================
 */
-slide.dark hgroup h2, 
-slide.dark hgroup h3, 
-slide.dark h1,
-slide.dark h2,
-slide.dark h3,
-slide.dark h4,
-slide.dark h5,
-slide.dark h6,
-slide.dark p,
-slide.dark ul,
-slide.dark ol {
+slides > slide.invert {
+	background-color: var(--sec) !important;
+}
+
+slide.invert hgroup h2, 
+slide.invert hgroup h3, 
+slide.invert h1,
+slide.invert h2,
+slide.invert h3,
+slide.invert h4,
+slide.invert h5,
+slide.invert h6,
+slide.invert p,
+slide.invert ul,
+slide.invert ol {
 	color: var(--pri);
 }
 
-slides > slide.dark:after {
+slides > slide.invert:after {
 	color: var(--pri-50);
 }
 
+/*
+=========================================
+    Null Slides Editing
+=========================================
+*/
+slides > slide.null {
+	background-color: #000000 !important;
+}
+
+slide.null hgroup h2, 
+slide.null hgroup h3, 
+slide.null h1,
+slide.null h2,
+slide.null h3,
+slide.null h4,
+slide.null h5,
+slide.null h6,
+slide.null p,
+slide.null ul,
+slide.null ol {
+	color: #ffffff;
+}
+
+slides > slide.null:after {
+	color: #000000;
+}
 
 /*
 =========================================
