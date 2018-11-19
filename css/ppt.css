@@ -42,6 +42,19 @@ a:hover {
 	visibility: hidden;
 }
 
+
+/*
+=========================================
+    External to Slides
+=========================================
+*/
+
+body {
+	background-color: #525252;
+	/* Courtesy of Hybridixstudio @ transparenttextures */
+	background-image: url("textures/black-orchid.png");
+}
+
 /*
 =========================================
     General
