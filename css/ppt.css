@@ -12,14 +12,6 @@ h3 { font-size: 1.8em; }
 p, ul, ol { line-height: 1.2em; }
 .ul { text-decoration: underline; }
 
-slides > slide {
-	font-size: 100%;
-}
-
-slides > slide:not(.nobackground):after {
-	font-family: var(--font-family);
-}
-
 /* POPOVERS ====================== */
 
 a:hover {
@@ -45,13 +37,13 @@ a:hover {
 
 /*
 =========================================
-    External to Slides
+    External
 =========================================
 */
 
 body {
-	background-color: #525252;
-	/* Courtesy of Hybridixstudio @ transparenttextures */
+    background-color: #525252;
+    /* Courtesy of Hybridixstudio @ transparenttextures */
     background-image: url(textures/black-orchid.png);
 }
 
@@ -60,6 +52,16 @@ body {
     General
 =========================================
 */
+
+slides > slide {
+	font-size: 100%;
+	background: var(--pri);
+	color: var(--font-color);
+}
+
+slides > slide:not(.nobackground):after {
+	font-family: var(--font-family);
+}
 
 /* References to be placed at bottom left */
 slide .ref {
@@ -74,7 +76,7 @@ slide .ref {
 
 /*
 =========================================
-    Title Page Editing
+    Title Page
 =========================================
 */
 .segue {
@@ -97,9 +99,10 @@ slide .ref {
 	font-size: 1em;
 	color: var(--font-color);
 }
+
 /*
 =========================================
-    Sections Editing
+    Sections
 =========================================
 */
 .segue h2 {
@@ -113,9 +116,10 @@ slide .ref {
 
 /*
 =========================================
-    Normal Slides Editing
+    Normal Slides
 =========================================
 */
+
 hgroup h2, hgroup h3 {
 	margin-bottom: 0.2em;
 }
@@ -128,11 +132,12 @@ hgroup h3 {
 
 /*
 =========================================
-    Invert Slides Editing
+    Inverted Slides
 =========================================
 */
 slides > slide.invert {
-	background-color: var(--sec) !important;
+	background: var(--sec) !important;
+	color: var(--pri);
 }
 
 slide.invert hgroup h2, 
@@ -155,11 +160,12 @@ slides > slide.invert:after {
 
 /*
 =========================================
-    Null Slides Editing
+    Null Slides
 =========================================
 */
 slides > slide.null {
-	background-color: #000000 !important;
+	background: #000000 !important;
+	color: #ffffff;
 }
 
 slide.null hgroup h2, 
@@ -192,15 +198,24 @@ slides > slide.null:after {
 	font-size: 18px;
 }
 
-slide.dark .note h1,
-slide.dark .note h2,
-slide.dark .note h3,
-slide.dark .note h4,
-slide.dark .note h5,
-slide.dark .note h6,
-slide.dark .note p,
-slide.dark .note ul,
-slide.dark .note ol {
+slide.invert .note h1,
+slide.invert .note h2,
+slide.invert .note h3,
+slide.invert .note h4,
+slide.invert .note h5,
+slide.invert .note h6,
+slide.invert .note p,
+slide.invert .note ul,
+slide.invert .note ol,
+slide.null .note h1,
+slide.null .note h2,
+slide.null .note h3,
+slide.null .note h4,
+slide.null .note h5,
+slide.null .note h6,
+slide.null .note p,
+slide.null .note ul,
+slide.null .note ol {
 	color: var(--font-color);
 }
 
