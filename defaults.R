@@ -296,12 +296,16 @@ theme_ppt(...) %:=% {
 # Highcharts ----
 ## ---- init_highcharts
 
-hcharts_lk() %:=% {
+hcharts_lk(scale = 1.0) %:=% {
+  
+  title_size <- paste0(2.0 * scale,'em')
+  subtitle_size <- paste0(1.5 * scale,'em')
+  font_size <- paste0(1.25 * scale,'em')
   
   axis_config <- list(
     # Text
-    title=list(style=list(fontSize = '1.8em', color=`@c`(ltxt,0.6)), margin=10, text=NA),
-    labels=list(style=list(fontSize = '1.5em', color=`@c`(ltxt,0.6)),
+    title=list(style=list(fontSize = subtitle_size, color=`@c`(ltxt,0.6)), margin=10, text=NA),
+    labels=list(style=list(fontSize = font_size, color=`@c`(ltxt,0.6)),
                 padding = 5),
     # Lines
     lineWidth=2,
@@ -318,7 +322,7 @@ hcharts_lk() %:=% {
     credits = list(enabled=FALSE),
     exporting = list(enabled=FALSE),
     # Title
-    title = list(style=list(fontFamily=`@f`, fontSize = '2.5em', color=`@c`(txt)), text=NA),
+    title = list(style=list(fontFamily=`@f`, fontSize = title_size, color=`@c`(txt)), text=NA),
     # Axises
     xAxis = axis_config,
     yAxis = axis_config,
@@ -329,7 +333,7 @@ hcharts_lk() %:=% {
       # items
       itemStyle = list(
         fontFamily = `@f`,
-        fontSize = '1.5em',
+        fontSize = font_size,
         fontWeight = 'normal',
         color = `@c`(txt)
       )
@@ -341,7 +345,7 @@ hcharts_lk() %:=% {
       headerFormat = "",
       style = list(
         fontFamily = `@f`,
-        fontSize = '1.5em',
+        fontSize = font_size,
         fontWeight = 'normal',
         color = `@c`(txt)
       ),
@@ -359,7 +363,7 @@ hcharts_lk() %:=% {
 }
 
 hcharts_ppt() %:=% {
-  ppt_opts <- hcharts_lk()
+  ppt_opts <- hcharts_lk(scale=1.7)
   ppt_opts$chart$marginBottom <- 45
   ppt_opts
 }
