@@ -224,10 +224,15 @@ panderOptions('table.style','multiline')
 theme_lk(fmt_plot = TRUE,
          fmt_legend = TRUE,
          fmt_x = TRUE,
-         fmt_y = TRUE) %:=% {
+         fmt_y = TRUE,
+         scale = 1.0) %:=% {
+  
+  title_size <- 15 * scale
+  subtitle_size <- 12 * scale
+  font_size <- 10 * scale
   
   bg_n_plots <- theme(
-    text = element_text(family=`@f`, colour=`@c`(txt),size=10),
+    text = element_text(family=`@f`, colour=`@c`(txt),size=font_size),
     # Background Color
     plot.background = element_rect(fill=`@c`(bg), colour=`@c`(bg)),
     
@@ -237,7 +242,7 @@ theme_lk(fmt_plot = TRUE,
     plot.margin = unit(c(20,20,20,20),'pt'),
     
     # Title
-    plot.title = element_text(size = 15, hjust=0.5),
+    plot.title = element_text(size = title_size, hjust=0.5),
     
     # Strips
     strip.background = element_rect(fill=`@c`(ltxt,0.5), 
@@ -248,9 +253,9 @@ theme_lk(fmt_plot = TRUE,
   legends <-  theme(
     legend.position = "bottom",
     legend.background = element_rect(fill=NA),
-    legend.title = element_text(size = 10),
+    legend.title = element_text(size = font_size),
     legend.key = element_rect(fill=`@c`(bg), colour=NA),
-    legend.text = element_text(size = 10),
+    legend.text = element_text(size = font_size),
     legend.direction ="horizontal",
     legend.box = "horizontal",
     legend.justification = c(1, 0)
@@ -259,8 +264,8 @@ theme_lk(fmt_plot = TRUE,
   x_axis <- theme(
     axis.line.x = element_line(colour=`@c`(ltxt)),
     axis.ticks.x = element_line(colour=`@c`(ltxt)),
-    axis.title.x = element_text(colour=`@c`(ltxt), size = 12),
-    axis.text.x = element_text(colour=`@c`(ltxt), size = 10),
+    axis.title.x = element_text(colour=`@c`(ltxt), size = subtitle_size),
+    axis.text.x = element_text(colour=`@c`(ltxt), size = font_size),
     panel.grid.major.x = element_line(colour=NA),
     panel.grid.minor.x = element_line(colour=NA)
   )
@@ -268,8 +273,8 @@ theme_lk(fmt_plot = TRUE,
   y_axis <- theme(
     axis.line.y = element_line(colour=`@c`(ltxt)),
     axis.ticks.y = element_line(colour=`@c`(ltxt)),
-    axis.title.y = element_text(colour=`@c`(ltxt), size = 12),
-    axis.text.y = element_text(colour=`@c`(ltxt), size = 10),
+    axis.title.y = element_text(colour=`@c`(ltxt), size = subtitle_size),
+    axis.text.y = element_text(colour=`@c`(ltxt), size = font_size),
     panel.grid.major.y = element_line(colour=NA),
     panel.grid.minor.y = element_line(colour=NA)
   )
@@ -281,5 +286,9 @@ theme_lk(fmt_plot = TRUE,
   if (fmt_y) { output <- output + y_axis }
   output
 }
+
+theme_ppt(...) %:=% {
+  theme_lk(..., scale=1.7)
+} 
 
 ## ---- end-of-init_ggplot
