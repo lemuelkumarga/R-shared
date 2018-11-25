@@ -2,6 +2,13 @@
 website_css_dir <- "../../shared/css/"
 `%|%` <- function(s1, s2) { paste0(s1,s2) }
 
+# Hacks to Ensure Consistency Between What is User-Loaded, and Automate-Loaded
+resolveHTML <- function() {
+  # Issue 1: Fix issues where highcharts load an older version of jquery
+  system("grep -v 'jquery-1.11.1' index.html > tmp.html")
+  system("mv tmp.html index.html")
+}
+
 knitRMD <- function(inputFile, 
                     encoding, 
                     prepend_mds = c("shared/md/website.md","shared/md/requirements.md","shared/md/cloning.md"),
@@ -27,6 +34,8 @@ knitRMD <- function(inputFile,
   # Create a responsive table container for all tables
   system("sed 's/<table/<div class=" %|% '"' %|% "table-responsive" %|% '"' %|% "><table/g' index.html | sed 's/<\\/table>/<\\/table><\\/div>/g' > tmp.html")
   system('mv tmp.html index.html')
+  
+  resolveHTML()
   
   # md output
   md_output <- rmarkdown::github_document(toc = TRUE,
@@ -89,4 +98,6 @@ knitPPT <- function(inputFile, encoding,
   # Allow Dark Slides and Scaling in mobile
   system("sed '/slide-invert/s/<slide class=\"/<slide class=\"invert /g' index.html | sed '/<slide/s/dark/invert/g' | sed '/slide-null/s/<slide class=\"/<slide class=\"null /g' | sed '/<meta name=\"viewport\"/s/\">/,user-scalable=no\">/g' > tmp.html")
   system("mv tmp.html index.html")
+  
+  resolveHTML()
 }
