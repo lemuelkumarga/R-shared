@@ -292,3 +292,77 @@ theme_ppt(...) %:=% {
 } 
 
 ## ---- end-of-init_ggplot
+
+# Highcharts ----
+## ---- init_highcharts
+
+hcharts_lk() %:=% {
+  
+  axis_config <- list(
+    # Text
+    title=list(style=list(fontSize = '1.8em', color=`@c`(ltxt,0.6)), margin=10, text=NA),
+    labels=list(style=list(fontSize = '1.5em', color=`@c`(ltxt,0.6)),
+                padding = 5),
+    # Lines
+    lineWidth=2,
+    lineColor=`@c`(ltxt,0.4),
+    # Ticks
+    tickWidth = 0,
+    # Grids
+    gridLineWidth=0
+  )
+  
+  def_opts <- list(
+    # Overall Definition
+    chart = list(style=list(fontFamily= `@f`)),
+    credits = list(enabled=FALSE),
+    exporting = list(enabled=FALSE),
+    # Title
+    title = list(style=list(fontFamily=`@f`, fontSize = '2.5em', color=`@c`(txt)), text=NA),
+    # Axises
+    xAxis = axis_config,
+    yAxis = axis_config,
+    zAxis = axis_config,
+    # Legend
+    legend = list(
+      align="right",
+      # items
+      itemStyle = list(
+        fontFamily = `@f`,
+        fontSize = '1.5em',
+        fontWeight = 'normal',
+        color = `@c`(txt)
+      )
+    ),
+
+    # Tooltips
+    tooltip=list(
+      # Text Format
+      headerFormat = "",
+      style = list(
+        fontFamily = `@f`,
+        fontSize = '1.5em',
+        fontWeight = 'normal',
+        color = `@c`(txt)
+      ),
+      # Animation
+      delayForDisplay=10
+    ),
+    #Annotations
+    # Remove Annotations
+    annotationsOptions=list(
+      enabledButtons=FALSE
+    )
+  )
+
+  def_opts
+}
+
+hcharts_ppt() %:=% {
+  ppt_opts <- hcharts_lk()
+  ppt_opts$chart$marginBottom <- 45
+  ppt_opts
+}
+
+
+## ---- end-of-init_highcharts
