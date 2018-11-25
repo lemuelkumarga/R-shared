@@ -304,9 +304,9 @@ hcharts_lk(scale = 1.0) %:=% {
   
   axis_config <- list(
     # Text
-    title=list(style=list(fontSize = subtitle_size, color=`@c`(ltxt,0.6)), margin=10, text=NA),
-    labels=list(style=list(fontSize = font_size, color=`@c`(ltxt,0.6)),
-                padding = 5),
+    title=list(style=list(fontSize = subtitle_size, color=`@c`(ltxt,0.6)),
+               text=NA),
+    labels=list(style=list(fontSize = font_size, color=`@c`(ltxt,0.6))),
     # Lines
     lineWidth=2,
     lineColor=`@c`(ltxt,0.4),
@@ -363,8 +363,12 @@ hcharts_lk(scale = 1.0) %:=% {
 }
 
 hcharts_ppt() %:=% {
-  ppt_opts <- hcharts_lk(scale=1.7)
-  ppt_opts$chart$marginBottom <- 45
+  ppt_opts <- hcharts_lk(scale=1.5)
+  ppt_opts$chart$style$marginBottom <- 45
+  
+  # Legend Formatting
+  ppt_opts$legend$layout <- "vertical"
+  ppt_opts$legend$verticalAlign <- "middle"
   ppt_opts
 }
 
