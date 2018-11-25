@@ -369,6 +369,10 @@ hcharts_ppt() %:=% {
   # Legend Formatting
   ppt_opts$legend$layout <- "vertical"
   ppt_opts$legend$verticalAlign <- "middle"
+  
+  #Tooltip Formatting
+  ppt_opts$tooltip$style$fontSize <- paste0(
+    as.numeric(gsub("em","",ppt_opts$tooltip$style$fontSize)) * 0.9,"em")
   ppt_opts
 }
 
