@@ -331,6 +331,7 @@ hcharts_lk(scale = 1.0) %:=% {
     zAxis = axis_config,
     # Legend
     legend = list(
+      useHTML=TRUE,
       align="right",
       # items
       itemStyle = list(
@@ -338,6 +339,10 @@ hcharts_lk(scale = 1.0) %:=% {
         fontSize = font_size,
         fontWeight = 'normal',
         color = `@c`(ltxt,0.6)
+      ),
+      navigation = list(
+        activeColor = `@c`(ltxt, 0.8),
+        inactiveColor = `@c`(ltxt, 0.2)
       )
     ),
 
