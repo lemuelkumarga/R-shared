@@ -300,9 +300,9 @@ theme_ppt(...) %:=% {
 hcharts_lk(scale = 1.0) %:=% {
   
   font_size <- paste0(1.0 * scale,'em')
-  title_size <- paste0(1.5 * scale,'em')
-  subtitle_size <- paste0(1.2 * scale,'em')
-  ticks_size <- paste0(1.0 * scale, 'em')
+  title_size <- paste0(1.5,'em')
+  subtitle_size <- paste0(1.2,'em')
+  ticks_size <- paste0(1.0, 'em')
   
   axis_config <- list(
     # Text
