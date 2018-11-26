@@ -100,7 +100,8 @@ slide .ref {
 
 .title-slide hgroup h2 {
     font-size: 2em;
-    color: var(--heading-color-75);
+    color: var(--heading-color);
+    opacity: 0.75;
     font-weight: 300;
 }
 
@@ -135,7 +136,8 @@ hgroup h2, hgroup h3 {
 
 hgroup h3 {
 	font-size: 1.5em;
-	color: var(--heading-color-50);
+	color: var(--heading-color);
+	opacity: 0.5;
 	padding-left: 10px;
 }
 
