@@ -99,6 +99,7 @@ load_or_install.packages("dplyr", "rlang","grDevices","ggplot2","pander")
   # Load Specifications
   #Specify which css files are to be used, in descending priority
   css_files = c("../../shared/css/definitions.css",
+                "defaults.css",
                 "shared/css/defaults.css")
   
   
