@@ -335,9 +335,9 @@ hcharts_lk(scale = 1.0) %:=% {
       # items
       itemStyle = list(
         fontFamily = `@f`,
-        fontSize = subtitle_size,
+        fontSize = font_size,
         fontWeight = 'normal',
-        color = `@c`(txt)
+        color = `@c`(ltxt,0.6)
       )
     ),
 
