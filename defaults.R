@@ -335,7 +335,7 @@ hcharts_lk(scale = 1.0) %:=% {
       # items
       itemStyle = list(
         fontFamily = `@f`,
-        fontSize = font_size,
+        fontSize = subtitle_size,
         fontWeight = 'normal',
         color = `@c`(txt)
       )
@@ -366,7 +366,7 @@ hcharts_lk(scale = 1.0) %:=% {
 }
 
 hcharts_ppt() %:=% {
-  ppt_opts <- hcharts_lk(scale=1.)
+  ppt_opts <- hcharts_lk(scale=0.8)
   ppt_opts$chart$style$marginBottom <- 45
   
   # Legend Formatting
@@ -374,9 +374,6 @@ hcharts_ppt() %:=% {
   ppt_opts$legend$layout <- "vertical"
   ppt_opts$legend$verticalAlign <- "middle"
   
-  #Tooltip Formatting
-  ppt_opts$tooltip$style$fontSize <- paste0(
-    as.numeric(gsub("em","",ppt_opts$tooltip$style$fontSize)) * 0.4,"em")
   ppt_opts
 }
 
