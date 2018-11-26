@@ -342,6 +342,7 @@ hcharts_lk(scale = 1.0) %:=% {
 
     # Tooltips
     tooltip=list(
+      useHTML=TRUE,
       # Text Format
       headerFormat = "",
       style = list(
@@ -368,12 +369,13 @@ hcharts_ppt() %:=% {
   ppt_opts$chart$style$marginBottom <- 45
   
   # Legend Formatting
+  ppt_opts$legend$floating <- TRUE
   ppt_opts$legend$layout <- "vertical"
   ppt_opts$legend$verticalAlign <- "middle"
   
   #Tooltip Formatting
   ppt_opts$tooltip$style$fontSize <- paste0(
-    as.numeric(gsub("em","",ppt_opts$tooltip$style$fontSize)) * 0.9,"em")
+    as.numeric(gsub("em","",ppt_opts$tooltip$style$fontSize)) * 0.4,"em")
   ppt_opts
 }
 
