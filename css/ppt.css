@@ -14,14 +14,6 @@ p, ul, ol { line-height: 1.2em; }
 
 /* POPOVERS ====================== */
 
-a, a:hover, a:focus {
-  color: inherit !important;
-  border-bottom: none;
-}
-
-a { opacity: 0.5; }
-a:hover, a:focus { opacity: 0.75; }
-
 .popover {
 	max-width: 500px;
 	font-size: 0.8em;
@@ -38,6 +30,19 @@ a:hover, a:focus { opacity: 0.75; }
 	visibility: hidden;
 }
 
+/* LINKS ====================== */
+
+a, a:hover, a:focus {
+  color: inherit !important;
+  border-bottom: none;
+}
+
+a { opacity: 0.5; }
+a:hover, a:focus { opacity: 0.75; }
+
+/* CODE ====================== */
+
+pre { font-family: var(--code-family); }
 
 /*
 =========================================
