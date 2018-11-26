@@ -95,9 +95,22 @@ knitPPT <- function(inputFile, encoding,
                     encoding = encoding, 
                     output_file=html_file)
   
-  # Allow Dark Slides and Scaling in mobile
-  system("sed '/slide-invert/s/<slide class=\"/<slide class=\"invert /g' index.html | sed '/<slide/s/dark/invert/g' | sed '/slide-null/s/<slide class=\"/<slide class=\"null /g' | sed '/<meta name=\"viewport\"/s/\">/,user-scalable=no\">/g' > tmp.html")
+  # Disable scaling
+  system("sed '/<meta name=\"viewport\"/s/\">/,user-scalable=no\">/g' index.html > tmp.html")
   system("mv tmp.html index.html")
+  
+  # Convert dark slides to invert
+  system("sed '/<slide/s/dark/invert/g' index.html > tmp.html")
+  system("mv tmp.html index.html")
+  
+  # Use to transfer any css styles specified in Rmd from the article to slide element 
+  from_article_to_slide <- function(cls) {
+    system("sed '/slide-" %|% cls %|% "/s/<slide class=\"/<slide class=\"" %|% cls %|% " /g' index.html > tmp.html")
+    system("mv tmp.html index.html")
+  }
+  
+  from_article_to_slide("invert")
+  from_article_to_slide("null")
   
   resolveHTML()
 }
