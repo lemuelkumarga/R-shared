@@ -79,7 +79,8 @@ knitRMD <- function(inputFile,
 
 knitPPT <- function(inputFile, encoding,
                     css=c('shared/css/defaults.css', website_css_dir %|% 'definitions.css',
-                          website_css_dir %|% "general.css",'shared/css/ppt.css')) { 
+                          website_css_dir %|% "general.css",'shared/css/ppt.css'),
+                    slide_classes = c()) { 
   
   # Then collects all the additional JS plugins
   js = rmarkdown::includes(in_header= "shared/js/ppt.html")
@@ -111,6 +112,8 @@ knitPPT <- function(inputFile, encoding,
   
   from_article_to_slide("invert")
   from_article_to_slide("null")
+  
+  for (c in slide_classes) { from_article_to_slide(c) }
   
   resolveHTML()
 }
