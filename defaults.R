@@ -299,9 +299,9 @@ theme_ppt(...) %:=% {
 
 hcharts_lk(scale = 1.0) %:=% {
   
-  title_size <- paste0(2.0 * scale,'em')
-  subtitle_size <- paste0(1.5 * scale,'em')
-  font_size <- paste0(1.25 * scale,'em')
+  title_size <- paste0(1.2 * scale,'em')
+  subtitle_size <- paste0(1.0 * scale,'em')
+  font_size <- paste0(0.8 * scale,'em')
   
   axis_config <- list(
     # Text
@@ -319,7 +319,7 @@ hcharts_lk(scale = 1.0) %:=% {
   
   def_opts <- list(
     # Overall Definition
-    chart = list(style=list(fontFamily= `@f`)),
+    chart = list(style=list(fontFamily= `@f`, fontSize=font_size)),
     credits = list(enabled=FALSE),
     exporting = list(enabled=FALSE),
     # Title
@@ -365,7 +365,7 @@ hcharts_lk(scale = 1.0) %:=% {
 }
 
 hcharts_ppt() %:=% {
-  ppt_opts <- hcharts_lk(scale=1.5)
+  ppt_opts <- hcharts_lk(scale=1.)
   ppt_opts$chart$style$marginBottom <- 45
   
   # Legend Formatting
