@@ -299,15 +299,16 @@ theme_ppt(...) %:=% {
 
 hcharts_lk(scale = 1.0) %:=% {
   
-  title_size <- paste0(1.2 * scale,'em')
-  subtitle_size <- paste0(1.0 * scale,'em')
-  font_size <- paste0(0.8 * scale,'em')
+  font_size <- paste0(1.0 * scale,'em')
+  title_size <- paste0(1.5 * scale,'em')
+  subtitle_size <- paste0(1.2 * scale,'em')
+  ticks_size <- paste0(1.0 * scale, 'em')
   
   axis_config <- list(
     # Text
     title=list(style=list(fontSize = subtitle_size, color=`@c`(ltxt,0.6)),
                text=NA),
-    labels=list(style=list(fontSize = font_size, color=`@c`(ltxt,0.6))),
+    labels=list(style=list(fontSize = ticks_size, color=`@c`(ltxt,0.6))),
     # Lines
     lineWidth=2,
     lineColor=`@c`(ltxt,0.4),
