@@ -12,7 +12,11 @@ h3 { font-size: 1.8em; }
 p, ul, ol { line-height: 1.2em; }
 .ul { text-decoration: underline; }
 
-/* POPOVERS ====================== */
+/*
+=========================================
+   Popovers
+=========================================
+*/
 
 .popover {
 	max-width: 500px;
@@ -30,7 +34,11 @@ p, ul, ol { line-height: 1.2em; }
 	visibility: hidden;
 }
 
-/* LINKS ====================== */
+/*
+=========================================
+   Links
+=========================================
+*/
 
 a, a:hover, a:focus {
   color: inherit !important;
@@ -40,9 +48,53 @@ a, a:hover, a:focus {
 a { opacity: 0.5; }
 a:hover, a:focus { opacity: 0.75; }
 
-/* CODE ====================== */
+/*
+=========================================
+   Code
+=========================================
+*/
 
 pre { font-family: var(--code-family); }
+
+/*
+=========================================
+   Tables
+=========================================
+*/
+
+table.rmdtable {
+	border-bottom: 0px;
+}
+
+table.rmdtable th, table.rmdtable td {
+	padding: 0.5rem 0.5rem;
+}
+
+th:not(:last-child), td:not(:last-child) { 
+	border-right: 1px solid var(--font-color-50); 
+}
+
+table.rmdtable th {
+	background: var(--pri);
+    color: var(--sec);
+    font-size: 1.3em;
+    font-family: var(--heading-family);
+    text-align: center;
+    border-bottom: 1px solid var(--font-color-50);
+}
+
+table.rmdtable tr:nth-child(odd) {
+    background-color: inherit;
+}
+
+table.rmdtable tr > td:first-child {
+	font-weight: initial;
+	color: inherit;
+}
+
+table.rmdtable td {
+	font-size: 1.0em;
+}
 
 /*
 =========================================
@@ -254,4 +306,3 @@ slide.null .note ol {
 	font-size: 0.8em;
 	opacity: 0.5;
 }
-
