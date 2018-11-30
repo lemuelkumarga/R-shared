@@ -302,13 +302,13 @@ hcharts_lk(scale = 1.0) %:=% {
   font_size <- paste0(1.0 * scale,'em')
   title_size <- paste0(1.5,'em')
   subtitle_size <- paste0(1.2,'em')
-  ticks_size <- paste0(1.0, 'em')
+  ticks_size <- paste0(0.8, 'em')
   
   axis_config <- list(
     # Text
     title=list(style=list(fontSize = subtitle_size, color=`@c`(ltxt,0.6)),
                text=NA),
-    labels=list(style=list(fontSize = ticks_size, color=`@c`(ltxt,0.6))),
+    labels=list(style=list(fontSize = ticks_size, color=`@c`(ltxt,0.6)), useHTML=TRUE),
     # Lines
     lineWidth=2,
     lineColor=`@c`(ltxt,0.4),
