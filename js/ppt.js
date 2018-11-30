@@ -2,6 +2,14 @@ $(document).ready(function(){
 
 
   /* ===================================
+    STORE HEIGHT OF EACH
+    HIGHCHART FOR ZOOMING LATER ON
+  ===================================== */
+  $('.highchart').each(function() {
+    $(this).attr("origin_height", $(this).height())
+  })
+
+  /* ===================================
   	AUTO ZOOM BASED ON WIDTH
   ===================================== */
   function ppt_resize() {
@@ -23,12 +31,20 @@ $(document).ready(function(){
   	}
 
   	$('body').css('zoom', 0.95 * wwidth / width)
+
+    // To fix highcharts
+    /*
+    $(".highchart").css('zoom', 1. / (0.95 * wwidth / width))
+    $('.highchart').each(function() {
+      $(this).css('height', $(this).attr('origin_height') / $(this).css('zoom'))
+    }) */
   }
 
   // Resize PPT based on window change
   $(window).on('resize orientationchange', function() {
   	ppt_resize()
   })
+
 
   ppt_resize()
 
