@@ -3,7 +3,9 @@ $(document).ready(function(){
 
   /* ===================================
   	AUTO ZOOM BASED ON WIDTH
-  ===================================== */
+    (Temporarily Disabled Due to Interactive
+    Charts)
+  
   function ppt_resize() {
 
   	var width = $('slides > slide').css('width').replace('px','')
@@ -31,6 +33,7 @@ $(document).ready(function(){
   })
 
   ppt_resize()
+  ===================================== */
 
 
   /* ===================================
