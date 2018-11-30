@@ -302,7 +302,7 @@ hcharts_lk(scale = 1.0) %:=% {
   font_size <- paste0(1.0 * scale,'em')
   title_size <- paste0(1.5,'em')
   subtitle_size <- paste0(1.2,'em')
-  ticks_size <- paste0(0.8, 'em')
+  ticks_size <- paste0(1.0, 'em')
   
   axis_config <- list(
     # Text
@@ -374,6 +374,11 @@ hcharts_lk(scale = 1.0) %:=% {
 hcharts_ppt() %:=% {
   ppt_opts <- hcharts_lk(scale=0.8)
   ppt_opts$chart$style$marginBottom <- 45
+  
+  # Axis Formatting
+  ppt_opts$xAxis$labels$style$fontSize = "0.8em"
+  ppt_opts$yAxis$labels$style$fontSize = "0.8em"
+  ppt_opts$zAxis$labels$style$fontSize = "0.8em"
   
   # Legend Formatting
   ppt_opts$legend$floating <- TRUE
