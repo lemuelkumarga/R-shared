@@ -7,16 +7,17 @@ $(document).ready(function(){
     ENABLED
     https://stackoverflow.com/questions/20339047/reveal-js-with-highcharts
   ===================================== */
-  (function (H) {
-      H.wrap(H.Pointer.prototype, 'normalize', function (proceed, e) {
-          var e = proceed.call(this,e);
-          var zoom = $('body').css('zoom');
-          var positionX = e.pageX - e.chartX;
-          var positionY = e.pageY - e.chartY;
-          e.chartX = Math.round((e.pageX - positionX*zoom)/zoom);
-          e.chartY = Math.round((e.pageY - positionY*zoom)/zoom);
-        return e;
-      });
-  }(Highcharts));
-
+  if ((typeof Highcharts) === undefined) {
+    (function (H) {
+        H.wrap(H.Pointer.prototype, 'normalize', function (proceed, e) {
+            var e = proceed.call(this,e);
+            var zoom = $('body').css('zoom');
+            var positionX = e.pageX - e.chartX;
+            var positionY = e.pageY - e.chartY;
+            e.chartX = Math.round((e.pageX - positionX*zoom)/zoom);
+            e.chartY = Math.round((e.pageY - positionY*zoom)/zoom);
+          return e;
+        });
+    }(Highcharts));
+  }
 });
