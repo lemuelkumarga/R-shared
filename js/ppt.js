@@ -11,7 +11,10 @@ $(document).ready(function(){
 
   /* ===================================
   	AUTO ZOOM BASED ON WIDTH
-  ===================================== */
+
+    (Currently Disabled Due to 
+    Interactive Chart Issues)
+    
   function ppt_resize() {
 
   	var width = $('slides > slide').css('width').replace('px','')
@@ -33,11 +36,10 @@ $(document).ready(function(){
   	$('body').css('zoom', 0.95 * wwidth / width)
 
     // To fix highcharts
-    /*
-    $(".highchart").css('zoom', 1. / (0.95 * wwidth / width))
-    $('.highchart').each(function() {
-      $(this).css('height', $(this).attr('origin_height') / $(this).css('zoom'))
-    }) */
+    //$(".highchart").css('zoom', 1. / (0.95 * wwidth / width))
+    //$('.highchart').each(function() {
+    //  $(this).css('height', $(this).attr('origin_height') / $(this).css('zoom'))
+    //})
   }
 
   // Resize PPT based on window change
@@ -47,7 +49,7 @@ $(document).ready(function(){
 
 
   ppt_resize()
-
+  ===================================== */
 
   /* ===================================
   	PPT POPOVERS
