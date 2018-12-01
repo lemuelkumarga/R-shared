@@ -97,7 +97,7 @@ knitPPT <- function(inputFile, encoding,
                     output_file=html_file)
   
   # Disable scaling
-  system("sed '/<meta name=\"viewport\"/s/width=device-width, initial-scale=1/user-scalable=no/g' index.html > tmp.html")
+  system("sed '/<meta name=\"viewport\"/s/\">/,user-scalable=no\">/g' index.html > tmp.html")
   system("mv tmp.html index.html")
   
   # Convert dark slides to invert

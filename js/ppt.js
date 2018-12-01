@@ -1,19 +1,8 @@
 $(document).ready(function(){
 
-
-  /* ===================================
-    STORE HEIGHT OF EACH
-    HIGHCHART FOR ZOOMING LATER ON
-  ===================================== */
-  $('.highchart').each(function() {
-    $(this).attr("origin_height", $(this).height())
-  })
-
   /* ===================================
   	AUTO ZOOM BASED ON WIDTH
-
-    (Currently Disabled Due to 
-    Interactive Chart Issues)
+  ===================================== */
     
   function ppt_resize() {
 
@@ -34,22 +23,35 @@ $(document).ready(function(){
   	}
 
   	$('body').css('zoom', 0.95 * wwidth / width)
-
-    // To fix highcharts
-    //$(".highchart").css('zoom', 1. / (0.95 * wwidth / width))
-    //$('.highchart').each(function() {
-    //  $(this).css('height', $(this).attr('origin_height') / $(this).css('zoom'))
-    //})
   }
 
   // Resize PPT based on window change
   $(window).on('resize orientationchange', function() {
-  	ppt_resize()
+  	ppt_resize();
   })
 
 
-  ppt_resize()
+  ppt_resize();
+
+  /* ===================================
+    PPT HIGHCHARTS
+    THIS IS USED TO FIX HIGHCHARTS
+    TOOLTIP ERROR WHEN AUTO ZOOMING IS 
+    ENABLED
+    https://stackoverflow.com/questions/20339047/reveal-js-with-highcharts
   ===================================== */
+  (function (H) {
+      H.wrap(H.Pointer.prototype, 'normalize', function (proceed, e) {
+          var e = proceed.call(this,e);
+          var zoom = $('body').css('zoom');
+          var positionX = e.pageX - e.chartX;
+          var positionY = e.pageY - e.chartY;
+          e.chartX = Math.round((e.pageX - positionX*zoom)/zoom);
+          e.chartY = Math.round((e.pageY - positionY*zoom)/zoom);
+        return e;
+      });
+  }(Highcharts));
+
 
   /* ===================================
   	PPT POPOVERS
