@@ -7,7 +7,7 @@ $(document).ready(function(){
     ENABLED
     https://stackoverflow.com/questions/20339047/reveal-js-with-highcharts
   ===================================== */
-  if (!((typeof Highcharts) === undefined)) {
+  if ((typeof Highcharts) != "undefined") {
     (function (H) {
         H.wrap(H.Pointer.prototype, 'normalize', function (proceed, e) {
             var e = proceed.call(this,e);
