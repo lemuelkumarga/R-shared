@@ -16,7 +16,7 @@ knitRMD <- function(inputFile,
                             website_css_dir %|% "general.css",'shared/css/Rmd.css')) {
   
   # Then collects all the additional JS plugins
-  js = rmarkdown::includes(in_header= "shared/js/js.html")
+  js = rmarkdown::includes(in_header= "shared/js/rmd/js.html")
   
   # html output
   html_output <- rmarkdown::html_document(css=css, 
@@ -83,7 +83,7 @@ knitPPT <- function(inputFile, encoding,
                     slide_classes = c()) { 
   
   # Then collects all the additional JS plugins
-  js = rmarkdown::includes(in_header= "shared/js/ppt.html")
+  js = rmarkdown::includes(in_header= "shared/js/ppt/js.html")
   
   html_output <- rmarkdown::ioslides_presentation(
                     css=css,
