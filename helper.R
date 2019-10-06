@@ -70,7 +70,7 @@ data_overview(data,
   cols_summary$Examples <- lapply(cols_summary$ColumnNames,
                                   function(cname) {
                                     data %>%
-                                      filter_(paste0("!(",null_fn(cname),")")) %>%
+                                      filter(!!parse_expr(paste0("!(",null_fn(cname),")"))) %>%
                                       { .[[cname]] } %>%
                                       unique() -> filtered_set
                                     filtered_set[1:min(5, length(filtered_set))] %>%
@@ -79,7 +79,7 @@ data_overview(data,
   cols_summary$EmptyValues <- lapply(cols_summary$ColumnNames,
                                      function(cname) {
                                        data %>%
-                                         filter_(null_fn(cname)) %>%
+                                         filter(!!parse_expr(null_fn(cname))) %>%
                                          nrow()
                                      })
   cols_summary$PctFilled <- lapply(cols_summary$EmptyValues,
