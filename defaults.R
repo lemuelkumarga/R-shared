@@ -337,7 +337,6 @@ hcharts_lk(scale = 1.0) %:=% {
       # items
       itemStyle = list(
         fontFamily = `@f`,
-        fontSize = font_size,
         fontWeight = 'normal',
         color = `@c`(ltxt,0.6)
       ),
@@ -354,7 +353,6 @@ hcharts_lk(scale = 1.0) %:=% {
       headerFormat = "",
       style = list(
         fontFamily = `@f`,
-        fontSize = font_size,
         fontWeight = 'normal',
         color = `@c`(txt)
       ),
@@ -379,11 +377,6 @@ hcharts_ppt() %:=% {
   ppt_opts$xAxis$labels$style$fontSize = "0.8em"
   ppt_opts$yAxis$labels$style$fontSize = "0.8em"
   ppt_opts$zAxis$labels$style$fontSize = "0.8em"
-  
-  # Legend Formatting
-  ppt_opts$legend$floating <- TRUE
-  ppt_opts$legend$layout <- "vertical"
-  ppt_opts$legend$verticalAlign <- "middle"
   
   ppt_opts
 }
