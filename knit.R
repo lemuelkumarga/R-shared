@@ -112,6 +112,9 @@ knitPPT <- function(inputFile, encoding,
   
   from_article_to_slide("invert")
   from_article_to_slide("null")
+  for (i in 1:5) {
+    from_article_to_slide(paste0("col",i))
+  }
   
   for (c in slide_classes) { from_article_to_slide(c) }
   

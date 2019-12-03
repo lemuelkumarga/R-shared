@@ -203,6 +203,23 @@ hgroup h3 {
 
 /*
 =========================================
+    Colour Slides
+=========================================
+*/
+
+slide.col1 hgroup h2, slide.col1 hgroup h3 { color: var(--color-1); }
+slide.col1.invert { background: var(--color-1) !important; }
+slide.col2 hgroup h2, slide.col2 hgroup h3 { color: var(--color-2); }
+slide.col2.invert { background: var(--color-2) !important; }
+slide.col3 hgroup h2, slide.col3 hgroup h3 { color: var(--color-3); }
+slide.col3.invert { background: var(--color-3) !important; }
+slide.col4 hgroup h2, slide.col4 hgroup h3 { color: var(--color-4); }
+slide.col4.invert { background: var(--color-4) !important; }
+slide.col5 hgroup h2, slide.col5 hgroup h3 { color: var(--color-5); }
+slide.col5.invert { background: var(--color-5) !important; }
+
+/*
+=========================================
     Inverted Slides
 =========================================
 */
