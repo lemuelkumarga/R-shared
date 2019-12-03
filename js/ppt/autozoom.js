@@ -26,10 +26,21 @@ $(document).ready(function(){
   }
 
   // Resize PPT based on window change
+  var resizeEnd;
   $(window).on('resize orientationchange', function() {
-  	ppt_resize();
+    // Add delay to allow resizing to finish
+    // Thanks to branneman
+    // https://gist.github.com/branneman/6023874
+    clearTimeout(resizeEnd);
+    resizeEnd = setTimeout(function() {
+        $(window).trigger('resize-end');
+    }, 100);
+  	
   })
 
+  $(window).on('resize-end', function() {
+    ppt_resize()
+  });
 
   ppt_resize();
 
