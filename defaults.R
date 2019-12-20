@@ -289,7 +289,7 @@ theme_lk(fmt_plot = TRUE,
 }
 
 theme_ppt(...) %:=% {
-  theme_lk(..., scale=1.7)
+  theme_lk(..., scale=1.2)
 } 
 
 ## ---- end-of-init_ggplot
