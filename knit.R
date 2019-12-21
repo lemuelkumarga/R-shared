@@ -80,14 +80,15 @@ knitRMD <- function(inputFile,
 knitPPT <- function(inputFile, encoding,
                     css=c('shared/css/defaults.css', website_css_dir %|% 'definitions.css',
                           website_css_dir %|% "general.css",'shared/css/ppt.css'),
-                    slide_classes = c()) { 
+                    slide_classes = c(),
+                    standalone = FALSE) { 
   
   # Then collects all the additional JS plugins
   js = rmarkdown::includes(in_header= "shared/js/ppt/js.html")
   
   html_output <- rmarkdown::ioslides_presentation(
                     css=css,
-                    self_contained=FALSE,
+                    self_contained=standalone,
                     includes=js
                   )
   html_file <- file.path(dirname(inputFile), 'index.html')
