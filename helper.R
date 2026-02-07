@@ -127,7 +127,7 @@ data_snapshot(data, r_col, cont_geom = NULL, disc_geom = NULL, misc_layers = geo
   
   # Split data into three components, response, cont_features, disc_features
   response <- data %>% select(r_col)
-  features <- data %>% select_("-" %|% r_col)
+  features <- data %>% select(-!!sym(r_col))
   cont_features <- features %>% select_if(is.numeric)
   disc_features <- features %>% select_if(~!is.numeric(.))
   
@@ -167,7 +167,7 @@ data_snapshot(data, r_col, cont_geom = NULL, disc_geom = NULL, misc_layers = geo
       # Order disc_features by Median
       disc_order <- disc_features %>%
                     group_by(var, val) %>%
-                    summarise_(.dots=list("med"="median(" %|% r_col %|%")")) %>%
+                    summarise(.dots=!!!syms(list("med"="median(" %|% r_col %|%")"))) %>%
                     arrange(desc(med)) %>%
                     `[[`('val')
       disc_features$val <- factor(disc_features$val, levels = disc_order)
@@ -183,20 +183,20 @@ data_snapshot(data, r_col, cont_geom = NULL, disc_geom = NULL, misc_layers = geo
     } else {
       # Find proportion across different levels
       disc_prop <- disc_features %>%
-                   group_by_("var", "val", r_col) %>%
+                   group_by(var, val, !!sym(r_col)) %>%
                    summarise(count=n()) %>%
                    ungroup() %>%
-                   group_by_("var","val") %>%
+                   group_by(var,val) %>%
                    mutate(val_count = sum(count)) %>%
                    ungroup() %>%
-                   group_by_("var") %>%
+                   group_by(var) %>%
                    mutate(val_freq = val_count/sum(count)) %>%
                    ungroup() %>%
                     # Find Density Ratio
-                   group_by_("var",r_col) %>%
+                   group_by(var,!!sym(r_col)) %>%
                    mutate(count_freq = count / sum(count)) %>%
                    ungroup() %>%
-                   group_by_("var","val") %>%
+                   group_by(var,val) %>%
                    mutate(freq_ratio = count_freq / sum(count_freq))
                     
       disc_plot <- ggplot(disc_prop,

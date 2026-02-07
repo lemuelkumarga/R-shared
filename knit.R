@@ -1,12 +1,21 @@
 
 website_css_dir <- "../../shared/css/"
 `%|%` <- function(s1, s2) { paste0(s1,s2) }
+# Runs system command.
+# For Windows, command will automatically be converted to bash. Requires
+# [1] Git to be installed with Git Bash
+# [2] Git bin folder to be added to path
+assign("@cmd", function(cmd) {
+  system(if (Sys.info()[["sysname"]] == "Windows") {
+    "bash.exe -c " %|% '"' %|% cmd %|% '"'
+  } else { cmd })
+})
 
 # Hacks to Ensure Consistency Between What is User-Loaded, and Automate-Loaded
 resolveHTML <- function() {
   # Issue 1: Fix issues where highcharts load an older version of jquery
-  system("grep -v 'jquery-1.11.1' index.html > tmp.html")
-  system("mv tmp.html index.html")
+  `@cmd`("grep -v 'jquery-1.11.1' index.html > tmp.html")
+  `@cmd`("mv tmp.html index.html")
 }
 
 knitRMD <- function(inputFile, 
@@ -32,8 +41,8 @@ knitRMD <- function(inputFile,
                     output_file = html_file); 
   
   # Create a responsive table container for all tables
-  system("sed 's/<table/<div class=" %|% '"' %|% "table-responsive" %|% '"' %|% "><table/g' index.html | sed 's/<\\/table>/<\\/table><\\/div>/g' > tmp.html")
-  system('mv tmp.html index.html')
+  `@cmd`("sed 's/<table/<div class=" %|% '"' %|% "table-responsive" %|% '"' %|% "><table/g' index.html | sed 's/<\\/table>/<\\/table><\\/div>/g' > tmp.html")
+  `@cmd`('mv tmp.html index.html')
   
   resolveHTML()
   
@@ -50,14 +59,14 @@ knitRMD <- function(inputFile,
 
   if (length(prepend_mds)) {
     # Draw a Horizontal Line to indicate the end of prepend
-    system('echo --- | cat - README.md > tmp.md')
-    system('mv tmp.md README.md')
+    `@cmd`('echo --- | cat - README.md > tmp.md')
+    `@cmd`('mv tmp.md README.md')
     
     # Prepend specified markdowns 
     for (md_file in rev(prepend_mds)) {
       if (file.exists(md_file)) {
-        system('cat ' %|% md_file %|% ' | cat - README.md > tmp.md')
-        system('mv tmp.md README.md')
+        `@cmd`('cat ' %|% md_file %|% ' | cat - README.md > tmp.md')
+        `@cmd`('mv tmp.md README.md')
       }
     }
     
@@ -70,11 +79,11 @@ knitRMD <- function(inputFile,
     project_name <- basename(project_name)
     
     # Replace projects with actual name of the project
-    system("sed 's/<project>/" %|% project_name %|% "/g' README.md > tmp.md")
-    system('mv tmp.md README.md')
+    `@cmd`("sed 's/<project>/" %|% project_name %|% "/g' README.md > tmp.md")
+    `@cmd`('mv tmp.md README.md')
   }
   
-  system('rm -rf README_files');
+  `@cmd`('rm -rf README_files');
 }
 
 knitPPT <- function(inputFile, encoding,
@@ -98,17 +107,17 @@ knitPPT <- function(inputFile, encoding,
                     output_file=html_file)
   
   # Disable scaling
-  system("sed '/<meta name=\"viewport\"/s/\">/,user-scalable=no\">/g' index.html > tmp.html")
-  system("mv tmp.html index.html")
+  `@cmd`("sed '/<meta name=\"viewport\"/s/\">/,user-scalable=no\">/g' index.html > tmp.html")
+  `@cmd`("mv tmp.html index.html")
   
   # Convert dark slides to invert
-  system("sed '/<slide/s/dark/invert/g' index.html > tmp.html")
-  system("mv tmp.html index.html")
+  `@cmd`("sed '/<slide/s/dark/invert/g' index.html > tmp.html")
+  `@cmd`("mv tmp.html index.html")
   
   # Use to transfer any css styles specified in Rmd from the article to slide element 
   from_article_to_slide <- function(cls) {
-    system("sed '/slide-" %|% cls %|% "/s/<slide class=\"/<slide class=\"" %|% cls %|% " /g' index.html > tmp.html")
-    system("mv tmp.html index.html")
+    `@cmd`("sed '/slide-" %|% cls %|% "/s/<slide class=\"/<slide class=\"" %|% cls %|% " /g' index.html > tmp.html")
+    `@cmd`("mv tmp.html index.html")
   }
   
   from_article_to_slide("invert")
