@@ -30,6 +30,10 @@ p, ul, ol { line-height: 1.2em; }
 	font-size: 1.0em;
 }
 
+.popover-body {
+	font-size: 0.9em;
+}
+
 .popover .arrow {
 	visibility: hidden;
 }
