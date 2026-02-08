@@ -7,7 +7,7 @@ website_css_dir <- "../../shared/css/"
 # [2] Git bin folder to be added to path
 assign("@cmd", function(cmd) {
   system(if (Sys.info()[["sysname"]] == "Windows") {
-    "bash.exe -c " %|% '"' %|% cmd %|% '"'
+    "bash.exe -c " %|% '"' %|% gsub('\"','""', cmd) %|% '"'
   } else { cmd })
 })
 
