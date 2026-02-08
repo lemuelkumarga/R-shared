@@ -346,6 +346,15 @@ hcharts_lk(scale = 1.0) %:=% {
       )
     ),
 
+    # Plot Options
+    plotOptions = list(
+      series=list(
+        label = list(
+          enabled = FALSE
+        )
+      )
+    ),
+    
     # Tooltips
     tooltip=list(
       useHTML=TRUE,
